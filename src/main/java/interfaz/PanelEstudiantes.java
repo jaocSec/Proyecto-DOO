@@ -76,7 +76,7 @@ public class PanelEstudiantes extends JPanel {
         txtInformacion.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnBuscarTutor = new JButton("🔍 Buscar Tutor Compatible");
+        btnBuscarTutor = new JButton("Buscar Tutor Compatible");
         btnBuscarTutor.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnBuscarTutor.setPreferredSize(new Dimension(250, 40));
         btnBuscarTutor.setEnabled(false);
