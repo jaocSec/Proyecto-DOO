@@ -5,7 +5,6 @@ import java.awt.*;
 public class PanelMenu extends JPanel {
     public JButton btnTutores= new JButton("Tutores");
     public JButton btnEstudiantes= new JButton("Estudiantes");
-    public JButton btnReservas= new JButton("Reservar");
     public JButton btnCalendario= new JButton("Calendario");
 
     public PanelMenu(){
@@ -23,7 +22,6 @@ public class PanelMenu extends JPanel {
 
         add(btnTutores, gbc);
         add(btnEstudiantes, gbc);
-        add(btnReservas, gbc);
         add(btnCalendario, gbc);
 
     }
