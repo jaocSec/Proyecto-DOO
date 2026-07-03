@@ -7,17 +7,19 @@ import java.awt.event.ActionListener;
 
 public class VentanaPrincipal extends JFrame{
     private PanelMenu panelMenu;
+    private PanelCalendario panelCalendario;
 
     public VentanaPrincipal(){
-        setTitle("Sistema de reservas de clases particulares");
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new Dimension(800, 500));
+        setTitle("SRCP");
+        setMinimumSize(new Dimension(1000, 700));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
         panelMenu= new PanelMenu();
+        panelCalendario= new PanelCalendario();
 
         add(panelMenu, BorderLayout.WEST);
+        add(panelCalendario, BorderLayout.CENTER);
     }
 }
