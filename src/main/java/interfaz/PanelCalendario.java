@@ -39,12 +39,18 @@ public class PanelCalendario extends JPanel {
 
         //Tabla
         String[] columnas = {"Fecha", "Horario", "Materia", "Estudiante", "Tutor", "Estado"};
-        modeloTabla = new DefaultTableModel(columnas, 0);
+        modeloTabla = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
 
         tablaReservas = new JTable(modeloTabla);
         tablaReservas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tablaReservas.setRowHeight(25); // Filas más altas para mejor lectura
         tablaReservas.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
+        tablaReservas.getTableHeader().setReorderingAllowed(false);
 
         //EJEMPLO!!!!!
         llenarDatos();
