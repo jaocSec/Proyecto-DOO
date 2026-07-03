@@ -23,6 +23,9 @@ public class PanelMenu extends JPanel {
         add(btnTutores, gbc);
         add(btnEstudiantes, gbc);
         add(btnCalendario, gbc);
-
     }
+
+    public JButton getBtnTutores(){return btnTutores;}
+    public JButton getBtnEstudiantes(){return btnEstudiantes;}
+    public JButton getBtnCalendario(){return btnCalendario;}
 }

@@ -38,7 +38,7 @@ public class PanelCalendario extends JPanel {
         add(panelFiltros, BorderLayout.NORTH);
 
         //Tabla
-        String[] columnas = {"Fecha", "Horario", "Materia", "Estudiante", "Tutor"};
+        String[] columnas = {"Fecha", "Horario", "Materia", "Estudiante", "Tutor", "Estado"};
         modeloTabla = new DefaultTableModel(columnas, 0);
 
         tablaReservas = new JTable(modeloTabla);
