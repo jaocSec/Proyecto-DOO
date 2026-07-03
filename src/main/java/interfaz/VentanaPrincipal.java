@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 public class VentanaPrincipal extends JFrame{
     private PanelMenu panelMenu;
-    private PanelEstudiantes panelEstudiantes;
+    private PanelCalendario panelCalendario;
 
     public VentanaPrincipal(){
         setTitle("SRCP");
@@ -17,9 +17,9 @@ public class VentanaPrincipal extends JFrame{
         setLayout(new BorderLayout());
 
         panelMenu= new PanelMenu();
-        panelEstudiantes = new PanelEstudiantes();
+        panelCalendario= new PanelCalendario();
 
         add(panelMenu, BorderLayout.WEST);
-        add(panelEstudiantes, BorderLayout.CENTER);
+        add(panelCalendario, BorderLayout.CENTER);
     }
 }
