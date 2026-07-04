@@ -6,7 +6,7 @@ import java.awt.*;
 public class VentanaPrincipal extends JFrame{
     private PanelMenu panelMenu;
     private JPanel panelContenido;
-    private PanelCalendario panelCalendario;
+    private PanelReservas panelReservas;
 
     public VentanaPrincipal(){
         setTitle("Sistema de Reserva de Clases Particulares");
@@ -23,7 +23,7 @@ public class VentanaPrincipal extends JFrame{
 
         panelMenu.getBtnTutores().addActionListener(e-> cambiarPanel(new PanelTutores()));
         panelMenu.getBtnEstudiantes().addActionListener(e-> cambiarPanel(new PanelEstudiantes()));
-        panelMenu.getBtnCalendario().addActionListener(e-> cambiarPanel(new PanelCalendario()));
+        panelMenu.getBtnCalendario().addActionListener(e-> cambiarPanel(new PanelReservas()));
     }
 
     private void cambiarPanel(JPanel nuevoPanel){
