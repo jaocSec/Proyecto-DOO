@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class PanelCalendario extends JPanel {
+public class PanelReservas extends JPanel {
     private JComboBox<String> comboEstudiantes;
     private JComboBox<String> comboTutores;
     private JButton btnLimpiarFiltros;
@@ -12,7 +12,7 @@ public class PanelCalendario extends JPanel {
     private JTable tablaReservas;
     private DefaultTableModel modeloTabla;
 
-    public PanelCalendario() {
+    public PanelReservas() {
 
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -51,6 +51,31 @@ public class PanelCalendario extends JPanel {
         tablaReservas.setRowHeight(25); // Filas más altas para mejor lectura
         tablaReservas.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tablaReservas.getTableHeader().setReorderingAllowed(false);
+
+        tablaReservas.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                if (e.getClickCount() == 2){
+                    int filaSeleccionada= tablaReservas.getSelectedRow();
+
+                    if (filaSeleccionada != -1){
+                       int filaModelo= tablaReservas.convertRowIndexToModel(filaSeleccionada);
+
+                       //EJEMPLOS!!
+                        String tutor = (String) modeloTabla.getValueAt(filaModelo, 0);
+                        String estudiante = (String) modeloTabla.getValueAt(filaModelo, 1);
+                        String fecha = (String) modeloTabla.getValueAt(filaModelo, 2);
+                        String estado = (String) modeloTabla.getValueAt(filaModelo, 3);
+
+                        Window ventanaPadre= SwingUtilities.getWindowAncestor(tablaReservas);
+
+                        DetalleReservas ventanaDetalle= new DetalleReservas(ventanaPadre);
+                        ventanaDetalle.setVisible(true);
+
+                    }
+                }
+            }
+        });
 
         //EJEMPLO!!!!!
         llenarDatos();
