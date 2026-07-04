@@ -21,6 +21,9 @@ public class VentanaPrincipal extends JFrame{
         panelContenido= new JPanel(new BorderLayout());
         add(panelContenido, BorderLayout.CENTER);
 
+        cambiarPanel(new PanelInicio());
+
+        panelMenu.getBtnInicio().addActionListener(e -> cambiarPanel(new PanelInicio()));
         panelMenu.getBtnTutores().addActionListener(e-> cambiarPanel(new PanelTutores()));
         panelMenu.getBtnEstudiantes().addActionListener(e-> cambiarPanel(new PanelEstudiantes()));
         panelMenu.getBtnCalendario().addActionListener(e-> cambiarPanel(new PanelReservas()));

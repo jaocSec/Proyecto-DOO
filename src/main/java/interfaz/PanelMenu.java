@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PanelMenu extends JPanel {
+    public JButton btnInicio= new JButton("Inicio");
     public JButton btnTutores= new JButton("Tutores");
     public JButton btnEstudiantes= new JButton("Estudiantes");
     public JButton btnCalendario= new JButton("Calendario");
@@ -20,11 +21,13 @@ public class PanelMenu extends JPanel {
         gbc.insets= new Insets(10,10,10,10);
         gbc.ipady= 40;
 
+        add(btnInicio, gbc);
         add(btnTutores, gbc);
         add(btnEstudiantes, gbc);
         add(btnCalendario, gbc);
     }
 
+    public JButton getBtnInicio(){return btnInicio;}
     public JButton getBtnTutores(){return btnTutores;}
     public JButton getBtnEstudiantes(){return btnEstudiantes;}
     public JButton getBtnCalendario(){return btnCalendario;}
