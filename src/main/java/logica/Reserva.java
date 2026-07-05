@@ -5,13 +5,13 @@ package logica;
  * interno utilizando el Patrón de Diseño State.
  * @author Antonia-FSR
  */
-public class Reserva {
-    private String idReserva;
-    private Estudiante estudiante;
-    private Tutor tutor;
-    private String materia;
-    private String horario;
-    private EstadoReserva estadoActual;
+public abstract class Reserva {
+    protected String idReserva;
+    protected Estudiante estudiante;
+    protected Tutor tutor;
+    protected String materia;
+    protected String horario;
+    protected EstadoReserva estadoActual;
     /**
      * Constructor para inicializar una nueva Reserva.
      * Al crearse, la reserva asume por defecto el estado inicial "Pendiente".
@@ -30,6 +30,14 @@ public class Reserva {
         this.horario = horario;
         this.estadoActual = new EstadoPendiente();
     }
+
+    /**
+     * Método para definir que tipo de clase es (virtual o presencial)
+     * @return un string indicando que tipo de reserva es (virtual, presencial)
+     */
+    public abstract String getTipo();
+
+
     /**
      * Solicita confirmar la reserva.
      * El comportamiento exacto de esta acción será delegado al estado actual.
@@ -74,5 +82,27 @@ public class Reserva {
      */
     public EstadoReserva getEstadoActual() {
         return estadoActual;
+    }
+
+
+    //GETTERS
+    public String getIdReserva() {
+        return idReserva;
+    }
+
+    public Estudiante getEstudiante() {
+        return estudiante;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public String getMateria() {
+        return materia;
+    }
+
+    public String getHorario() {
+        return horario;
     }
 }

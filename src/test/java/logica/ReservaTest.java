@@ -6,14 +6,18 @@ public class ReservaTest {
     private Reserva reserva;
 
     /**
-     * Este metodo se ejecuta automáticamente ANTES de cada @Test.
      * Nos sirve para tener una reserva "fresca" y nueva en cada prueba.
      */
     @BeforeEach
     public void setUp() {
         // Pasamos null a Estudiante y Tutor para simplificar,
         // ya que aquí solo nos interesa probar la lógica de los estados.
-        reserva = new Reserva("R001", null, null, "Matemáticas", "10:00 - 11:00");
+        reserva = new Reserva("R001", null, null, "Matemáticas", "10:00 - 11:00"){
+            @Override
+            public String getTipo(){
+                return "Prueba Unitaria";
+            }
+        };
     }
 
     @Test
