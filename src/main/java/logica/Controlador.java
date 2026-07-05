@@ -21,4 +21,25 @@ public class Controlador extends Observable{
         this.reservas= new ArrayList<>();
     }
 
+
+    public void registrarReserva(String tipo, String idReserva, Estudiante estudiante, Tutor tutor, String materia, String horario, String detalleExtra) {
+
+        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, idReserva, estudiante, tutor, materia, horario, detalleExtra);
+        reservas.add(nuevaReserva);
+
+        notificarObservadores();
+    }
+
+    //GETTERS
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    public List<Estudiante> getEstudiantes() {
+        return estudiantes;
+    }
+
+    public List<Tutor> getTutores() {
+        return tutores;
+    }
 }

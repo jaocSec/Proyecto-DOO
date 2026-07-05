@@ -21,8 +21,7 @@ public abstract class Observable {
     /**
      * Elimina un observador de la lista.
      */
-    public void removerObservador(InterfazObserver observador) {
-        observadores.remove(observador);
+    public void removerObservador(InterfazObserver observador) {observadores.remove(observador);
     }
 
     /**
