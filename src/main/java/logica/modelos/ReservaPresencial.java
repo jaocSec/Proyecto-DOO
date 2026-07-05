@@ -1,4 +1,4 @@
-package logica;
+package logica.modelos;
 
 /**
  * Representa una tutoría que se realizará físicamente en las instalaciones.

@@ -1,4 +1,9 @@
 package logica;
+import logica.estados.EstadoCancelada;
+import logica.estados.EstadoConfirmada;
+import logica.estados.EstadoFinalizada;
+import logica.estados.EstadoPendiente;
+import logica.modelos.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

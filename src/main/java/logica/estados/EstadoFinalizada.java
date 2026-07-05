@@ -1,4 +1,7 @@
-package logica;
+package logica.estados;
+
+import logica.modelos.Reserva;
+
 /**
  * Representa el estado terminal de éxito de una reserva, indicando
  * que la tutoría se realizó por completo. No permite transiciones.

@@ -1,5 +1,7 @@
 package logica;
 
+import logica.modelos.*;
+
 /**
  * Fábrica encargada de instanciar el tipo correcto de Reserva aplicando el patrón Factory Method.
  */

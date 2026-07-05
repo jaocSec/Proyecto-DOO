@@ -1,4 +1,7 @@
-package logica;
+package logica.estados;
+
+import logica.modelos.Reserva;
+
 /**
  * Representa un estado terminal de la reserva, indicando que fue anulada.
  * Este estado no permite transiciones adicionales.

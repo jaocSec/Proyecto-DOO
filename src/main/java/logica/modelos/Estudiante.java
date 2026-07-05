@@ -1,4 +1,4 @@
-package logica;
+package logica.modelos;
 /**
  * Representa a un estudiante dentro del sistema de reservas de tutorías.
  * Esta clase se encarga de almacenar y gestionar la información personal

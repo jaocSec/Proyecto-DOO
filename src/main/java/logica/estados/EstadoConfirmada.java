@@ -1,4 +1,7 @@
-package logica;
+package logica.estados;
+
+import logica.modelos.Reserva;
+
 /**
  * Representa el estado de una reserva que ha sido aceptada por el tutor.
  * Desde aquí, la tutoría puede ser cancelada o finalizada con éxito.

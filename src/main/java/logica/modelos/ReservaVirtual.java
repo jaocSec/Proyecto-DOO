@@ -1,4 +1,4 @@
-package logica;
+package logica.modelos;
 
 public class ReservaVirtual extends Reserva{
     private String linkReunion;

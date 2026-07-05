@@ -1,6 +1,5 @@
 package interfaz;
 
-import logica.Reserva;
 import javax.swing.*;
 import java.awt.*;
 

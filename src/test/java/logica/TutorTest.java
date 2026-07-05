@@ -1,6 +1,8 @@
 package logica;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import logica.modelos.Tutor;
 import org.junit.jupiter.api.Test;
 /**
  * Pruebas unitarias para la clase Tutor.

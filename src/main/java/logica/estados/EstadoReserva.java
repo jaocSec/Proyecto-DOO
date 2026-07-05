@@ -1,4 +1,7 @@
-package logica;
+package logica.estados;
+
+import logica.modelos.Reserva;
+
 /**
  * Interfaz para el Patrón State.
  * Define las acciones que puede recibir una reserva en cualquier estado.

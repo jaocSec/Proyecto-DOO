@@ -1,4 +1,8 @@
-package logica;
+package logica.modelos;
+
+import logica.estados.EstadoPendiente;
+import logica.estados.EstadoReserva;
+
 /**
  * Representa una reserva de tutoría entre un estudiante y un tutor.
  * Esta clase gestiona la información de la cita y maneja su estado

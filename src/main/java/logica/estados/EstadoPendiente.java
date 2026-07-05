@@ -1,4 +1,7 @@
-package logica;
+package logica.estados;
+
+import logica.modelos.Reserva;
+
 /**
  * Representa el estado inicial de una reserva cuando ha sido solicitada
  * pero aún no ha sido respondida por el tutor.
