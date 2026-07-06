@@ -95,6 +95,25 @@ public class Controlador extends Observable{
         return reservas;
     }
 
+    public int getCantidadReservasPendientes() {
+
+        int cantidad = 0;
+
+        for (Reserva reserva : reservas) {
+
+            if (!reserva.getEstadoActual()
+                    .getClass()
+                    .getSimpleName()
+                    .equals("EstadoCancelada")) {
+
+                cantidad++;
+            }
+
+        }
+
+        return cantidad;
+    }
+
     public List<Estudiante> getEstudiantes() {
         return estudiantes;
     }

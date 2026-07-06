@@ -33,7 +33,7 @@ public class PanelInicio extends JPanel implements InterfazObserver {
                 String.valueOf(controlador.getEstudiantes().size())));
         panelEstadisticas.add(crearResumen(
                 "Reservas Pendientes",
-                String.valueOf(controlador.getReservas().size())));
+                String.valueOf(controlador.getCantidadReservasPendientes())));
 
         add(panelEstadisticas, BorderLayout.CENTER);
 
