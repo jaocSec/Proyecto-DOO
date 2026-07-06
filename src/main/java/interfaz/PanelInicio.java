@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class PanelInicio extends JPanel implements InterfazObserver {
     private Controlador controlador;
+    private JPanel panelEstadisticas;
 
     public PanelInicio(Controlador controlador) {
 
@@ -22,18 +23,10 @@ public class PanelInicio extends JPanel implements InterfazObserver {
         add(lblBienvenida, BorderLayout.NORTH);
 
         //Panel estadisticas
-        JPanel panelEstadisticas = new JPanel(new GridLayout(1, 3, 20, 0));
+        panelEstadisticas = new JPanel(new GridLayout(1, 3, 20, 0));
 
-        //PanelResumen EJEMPLO!!!!
-        panelEstadisticas.add(crearResumen(
-                "Tutores Registrados",
-                String.valueOf(controlador.getTutores().size())));
-        panelEstadisticas.add(crearResumen(
-                "Estudiantes Registrados",
-                String.valueOf(controlador.getEstudiantes().size())));
-        panelEstadisticas.add(crearResumen(
-                "Reservas Pendientes",
-                String.valueOf(controlador.getCantidadReservasPendientes())));
+        //PanelResumen
+        actualizarResumen();
 
         add(panelEstadisticas, BorderLayout.CENTER);
 
@@ -41,6 +34,28 @@ public class PanelInicio extends JPanel implements InterfazObserver {
         add(new JPanel(), BorderLayout.SOUTH);
     }
 
+    private void actualizarResumen() {
+
+        panelEstadisticas.removeAll();
+
+        panelEstadisticas.add(crearResumen(
+                "Tutores Registrados",
+                String.valueOf(controlador.getTutores().size())
+        ));
+
+        panelEstadisticas.add(crearResumen(
+                "Estudiantes Registrados",
+                String.valueOf(controlador.getEstudiantes().size())
+        ));
+
+        panelEstadisticas.add(crearResumen(
+                "Reservas Pendientes",
+                String.valueOf(controlador.getCantidadReservasPendientes())
+        ));
+
+        panelEstadisticas.revalidate();
+        panelEstadisticas.repaint();
+    }
 
     private JPanel crearResumen(String titulo, String valor) {
         JPanel tarjeta = new JPanel(new BorderLayout(10, 10));
@@ -65,11 +80,7 @@ public class PanelInicio extends JPanel implements InterfazObserver {
     @Override
     public void actualizar() {
 
-        removeAll();
-
-        revalidate();
-
-        repaint();
+        actualizarResumen();
 
     }
 }
