@@ -13,9 +13,12 @@ public class Controlador extends Observable{
     private List<Tutor> tutores;
     private List<Reserva> reservas;
 
+    private Catalogos catalogo;
+
     public Controlador(){
         super();
 
+        this.catalogo= new Catalogos();
         this.estudiantes= new ArrayList<>();
         this.tutores= new ArrayList<>();
         this.reservas= new ArrayList<>();
@@ -121,4 +124,6 @@ public class Controlador extends Observable{
     public List<Tutor> getTutores() {
         return tutores;
     }
+
+    public Catalogos getCatalogo() {return catalogo;}
 }

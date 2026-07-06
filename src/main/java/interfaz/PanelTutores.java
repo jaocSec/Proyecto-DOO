@@ -183,7 +183,7 @@ public class PanelTutores extends JPanel implements InterfazObserver {
             return;
         }
 
-        FormularioTutor form = new FormularioTutor(SwingUtilities.getWindowAncestor(this), tutor);
+        FormularioTutor form = new FormularioTutor(SwingUtilities.getWindowAncestor(this), this.controlador, tutor);
         form.setVisible(true);
 
         if (form.isGuardado()) {
@@ -197,7 +197,7 @@ public class PanelTutores extends JPanel implements InterfazObserver {
     }
 
     private void agregarTutor() {
-        FormularioTutor form = new FormularioTutor(SwingUtilities.getWindowAncestor(this));
+        FormularioTutor form = new FormularioTutor(SwingUtilities.getWindowAncestor(this), this.controlador);
         form.setVisible(true);
 
         if (form.isGuardado()) {

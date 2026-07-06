@@ -1,9 +1,11 @@
 package interfaz;
 
+import logica.Controlador;
 import javax.swing.*;
 import java.awt.*;
 
 public class FormularioTutor extends JDialog {
+    private Controlador controlador;
     private JTextField txtNombre;
     private JTextField txtCorreo;
     private JTextField txtTarifa;
@@ -11,8 +13,11 @@ public class FormularioTutor extends JDialog {
     private JComboBox<String> cbHorario;
     private boolean guardado = false;
 
-    public FormularioTutor(Window parent) {
+    public FormularioTutor(Window parent, Controlador controlador) {
         super(parent, "Agregar Nuevo Tutor", Dialog.ModalityType.APPLICATION_MODAL);
+        this.controlador= controlador;
+
+
         setSize(400, 350);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
@@ -34,14 +39,12 @@ public class FormularioTutor extends JDialog {
 
         //Desplegable materia
         panelDatos.add(new JLabel("Materia:"));
-        String[] materiasBase = {"Cálculo I", "Cálculo II", "Cálculo III", "Programación", "Física I", "Física II", "Física III"};
-        cbMateria = new JComboBox<>(materiasBase);
+        cbMateria = new JComboBox<>(controlador.getCatalogo().getMaterias().toArray(new String[0]));
         panelDatos.add(cbMateria);
 
         //Desplegable horarios
         panelDatos.add(new JLabel("Horario Inicial:"));
-        String[] horariosBase = {"LUN-10:00", "LUN-15:00", "MAR-10:00", "MAR-15:00", "MIE-12:00", "JUE-09:00", "VIE-16:00"};
-        cbHorario = new JComboBox<>(horariosBase);
+        cbHorario = new JComboBox<>(controlador.getCatalogo().getHorarios().toArray(new String[0]));
         panelDatos.add(cbHorario);
 
         add(panelDatos, BorderLayout.CENTER);
@@ -73,8 +76,8 @@ public class FormularioTutor extends JDialog {
     }
 
     //Constructor edicion
-    public FormularioTutor(Window parent, logica.modelos.Tutor tutor) {
-        this(parent);
+    public FormularioTutor(Window parent, Controlador controlador, logica.modelos.Tutor tutor) {
+        this(parent, controlador);
         if (tutor != null) {
             setTitle("Editar Tutor");
             txtNombre.setText(tutor.getNombre());
