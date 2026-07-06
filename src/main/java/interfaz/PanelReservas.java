@@ -1,12 +1,14 @@
 package interfaz;
 
 import logica.Controlador;
+import logica.modelos.Reserva;
+import logica.observer.InterfazObserver;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class PanelReservas extends JPanel {
+public class PanelReservas extends JPanel implements InterfazObserver {
     private Controlador controlador;
     private JComboBox<String> comboEstudiantes;
     private JComboBox<String> comboTutores;
@@ -18,6 +20,7 @@ public class PanelReservas extends JPanel {
     public PanelReservas(Controlador controlador) {
 
         this.controlador = controlador;
+        controlador.agregarObservador(this);
 
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -74,7 +77,11 @@ public class PanelReservas extends JPanel {
 
                         Window ventanaPadre= SwingUtilities.getWindowAncestor(tablaReservas);
 
-                        DetalleReservas ventanaDetalle= new DetalleReservas(ventanaPadre);
+                        Reserva reserva =
+                                controlador.getReservas().get(filaModelo);
+
+                        DetalleReservas ventanaDetalle =
+                                new DetalleReservas(ventanaPadre, controlador);
                         ventanaDetalle.setVisible(true);
 
                     }
@@ -82,8 +89,7 @@ public class PanelReservas extends JPanel {
             }
         });
 
-        //EJEMPLO!!!!!
-        llenarDatos();
+        cargarReservas();
 
         JScrollPane scrollTabla = new JScrollPane(tablaReservas);
 
@@ -100,16 +106,58 @@ public class PanelReservas extends JPanel {
 
         btnCancelarClase = new JButton("Cancelar Clase Seleccionada");
         btnCancelarClase.setForeground(Color.RED);
+        btnCancelarClase.addActionListener(e -> cancelarReserva());
 
         panelAcciones.add(btnCancelarClase);
 
         add(panelAcciones, BorderLayout.SOUTH);
     }
 
-    //Datos ejemplo
-    private void llenarDatos() {
-        modeloTabla.addRow(new Object[]{"07-07-2026", "15:00 - 16:30", "Cálculo III", "María Soto", "Juan Pérez", "Confirmada"});
-        modeloTabla.addRow(new Object[]{"08-07-2026", "10:00 - 11:30", "Física II", "Pedro Aranda", "Ana Gómez", "Confirmada"});
-        modeloTabla.addRow(new Object[]{"09-07-2026", "17:00 - 18:00", "Programación", "Valentina Reyes", "Carlos Silva", "Pendiente"});
+    private void cancelarReserva() {
+
+        int fila = tablaReservas.getSelectedRow();
+
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione una reserva.");
+            return;
+        }
+
+        Reserva reserva = controlador.getReservas().get(fila);
+
+        reserva.cancelar();
+
+        controlador.refrescarUI();
+
+    }
+
+    private void cargarReservas() {
+
+        modeloTabla.setRowCount(0);
+
+        for (Reserva reserva : controlador.getReservas()) {
+
+            modeloTabla.addRow(new Object[]{
+
+                    "", // fecha
+
+                    reserva.getHorario(),
+
+                    reserva.getMateria(),
+
+                    reserva.getEstudiante().getNombre(),
+
+                    reserva.getTutor().getNombre(),
+
+                    reserva.getEstado()
+
+            });
+
+        }
+
+    }
+    @Override
+    public void actualizar() {
+        cargarReservas();
     }
 }

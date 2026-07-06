@@ -109,4 +109,11 @@ public abstract class Reserva {
     public String getHorario() {
         return horario;
     }
+
+    public String getEstado() {
+        return estadoActual
+                .getClass()
+                .getSimpleName()
+                .replace("Estado", "");
+    }
 }

@@ -1,16 +1,18 @@
 package interfaz;
 
 import logica.Controlador;
+import logica.observer.InterfazObserver;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class PanelInicio extends JPanel {
+public class PanelInicio extends JPanel implements InterfazObserver {
     private Controlador controlador;
 
     public PanelInicio(Controlador controlador) {
 
         this.controlador = controlador;
+        controlador.agregarObservador(this);
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
@@ -23,9 +25,15 @@ public class PanelInicio extends JPanel {
         JPanel panelEstadisticas = new JPanel(new GridLayout(1, 3, 20, 0));
 
         //PanelResumen EJEMPLO!!!!
-        panelEstadisticas.add(crearResumen("Tutores Registrados", "0"));
-        panelEstadisticas.add(crearResumen("Estudiantes Registrados", "0"));
-        panelEstadisticas.add(crearResumen("Reservas Pendientes", "0"));
+        panelEstadisticas.add(crearResumen(
+                "Tutores Registrados",
+                String.valueOf(controlador.getTutores().size())));
+        panelEstadisticas.add(crearResumen(
+                "Estudiantes Registrados",
+                String.valueOf(controlador.getEstudiantes().size())));
+        panelEstadisticas.add(crearResumen(
+                "Reservas Pendientes",
+                String.valueOf(controlador.getReservas().size())));
 
         add(panelEstadisticas, BorderLayout.CENTER);
 
@@ -53,5 +61,15 @@ public class PanelInicio extends JPanel {
         tarjeta.add(lblValor, BorderLayout.CENTER);
 
         return tarjeta;
+    }
+    @Override
+    public void actualizar() {
+
+        removeAll();
+
+        revalidate();
+
+        repaint();
+
     }
 }
