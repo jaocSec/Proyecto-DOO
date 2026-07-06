@@ -1,13 +1,15 @@
 package interfaz;
 
 import logica.Controlador;
+import logica.modelos.Estudiante;
+import logica.observer.InterfazObserver;
 
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class PanelEstudiantes extends JPanel {
+public class PanelEstudiantes extends JPanel implements InterfazObserver {
     private Controlador controlador;
     private DefaultListModel<String> modeloLista;
     private JList<String> listaEstudiantes;
@@ -19,9 +21,20 @@ public class PanelEstudiantes extends JPanel {
     private JTextArea txtInformacion;
     private JButton btnBuscarTutor;
 
+    private void cargarEstudiantes() {
+        modeloLista.clear();
+
+        for (Estudiante e : controlador.getEstudiantes()) {
+            modeloLista.addElement(e.getNombre());
+        }
+    }
+
     public PanelEstudiantes(Controlador controlador) {
+        modeloLista = new DefaultListModel<>();
+        listaEstudiantes = new JList<>(modeloLista);
 
         this.controlador = controlador;
+        controlador.agregarObservador(this);
         setLayout(new BorderLayout());
 
         //Panel Lista (izquierdo)
@@ -33,6 +46,9 @@ public class PanelEstudiantes extends JPanel {
         btnAgregar = new JButton("Agregar");
         btnEditar = new JButton("Editar");
         btnEliminar = new JButton("Eliminar");
+        btnAgregar.addActionListener(e -> agregarEstudiante());
+        btnEditar.addActionListener(e -> editarEstudiante());
+        btnEliminar.addActionListener(e -> eliminarEstudiante());
 
         panelBotones.add(btnAgregar);
         panelBotones.add(btnEditar);
@@ -40,9 +56,9 @@ public class PanelEstudiantes extends JPanel {
 
         //Lista de tutores
         modeloLista = new DefaultListModel<>(); //Lista con nombres
-        modeloLista.addElement("John Wick"); //Ejemplo
-        modeloLista.addElement("Jack Reacher"); //Ejemplo
-        modeloLista.addElement("Jack Ryan"); //Ejemplo
+        for (Estudiante estudiante : controlador.getEstudiantes()) {
+            modeloLista.addElement(estudiante.getNombre());
+        }
 
         listaEstudiantes = new JList<>(modeloLista); //Lista gráfica
         listaEstudiantes.setFont(new Font("Segoe UI", Font.PLAIN, 16));
@@ -114,16 +130,125 @@ public class PanelEstudiantes extends JPanel {
         divisor.setBorder(null);
 
         add(divisor, BorderLayout.CENTER);
+
+        cargarEstudiantes();
+    }
+
+    private void eliminarEstudiante() {
+
+        // 1. Selección
+        String seleccionado = listaEstudiantes.getSelectedValue();
+        if (seleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione un estudiante");
+            return;
+        }
+
+        // 2. Buscar
+        Estudiante est = controlador.buscarEstudiantePorNombre(seleccionado);
+        if (est == null) {
+            JOptionPane.showMessageDialog(this, "Estudiante no encontrado");
+            return;
+        }
+
+        // 3. Confirmación
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar este estudiante?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (confirmacion != JOptionPane.YES_OPTION) return;
+
+        // 4. Eliminar
+        controlador.eliminarEstudiante(est);
+
+        // 5. Mensaje
+        JOptionPane.showMessageDialog(this, "Estudiante eliminado correctamente");
+    }
+
+    private void editarEstudiante() {
+
+        // 1. Selección
+        String seleccionado = listaEstudiantes.getSelectedValue();
+        if (seleccionado == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione un estudiante");
+            return;
+        }
+
+        // 2. Buscar estudiante
+        Estudiante est = controlador.buscarEstudiantePorNombre(seleccionado);
+        if (est == null) {
+            JOptionPane.showMessageDialog(this, "Estudiante no encontrado");
+            return;
+        }
+
+        // 3. Pedir datos nuevos
+        String nuevoNombre = JOptionPane.showInputDialog(this, "Nuevo nombre:", est.getNombre());
+        if (nuevoNombre == null || nuevoNombre.isBlank()) return;
+
+        String nuevoCorreo = JOptionPane.showInputDialog(this, "Nuevo correo:", est.getCorreo());
+        if (nuevoCorreo == null || nuevoCorreo.isBlank()) return;
+
+        String nuevoTelefono = JOptionPane.showInputDialog(this, "Nuevo teléfono:", est.getTelefono());
+        if (nuevoTelefono == null || nuevoTelefono.isBlank()) return;
+
+        // 4. Aplicar cambios
+        est.setNombre(nuevoNombre);
+        est.setCorreo(nuevoCorreo);
+        est.setTelefono(nuevoTelefono);
+
+        // 5. Refrescar UI
+        controlador.refrescarUI();
+
+        // 6. Mensaje final
+        JOptionPane.showMessageDialog(this, "Estudiante actualizado correctamente");
+    }
+
+    private void agregarEstudiante() {
+
+        // 1. Pedir ID
+        String id = JOptionPane.showInputDialog(this, "ID del estudiante:");
+        if (id == null || id.isBlank()) return;
+
+        // 2. Pedir nombre
+        String nombre = JOptionPane.showInputDialog(this, "Nombre del estudiante:");
+        if (nombre == null || nombre.isBlank()) return;
+
+        // 3. Pedir correo
+        String correo = JOptionPane.showInputDialog(this, "Correo del estudiante:");
+        if (correo == null || correo.isBlank()) return;
+
+        // 4. Pedir teléfono
+        String telefono = JOptionPane.showInputDialog(this, "Teléfono del estudiante:");
+        if (telefono == null || telefono.isBlank()) return;
+
+        // 5. Crear estudiante
+        Estudiante nuevo = new Estudiante(id, nombre, correo, telefono);
+
+        // 6. Registrar en controlador
+        controlador.registrarEstudiante(nuevo);
+
+        // 7. Mensaje final
+        JOptionPane.showMessageDialog(this, "Estudiante agregado correctamente");
     }
 
     private void actualizarDetalles(String nombre) {
-        lblNombre.setText(nombre);
+
+        Estudiante estudiante = controlador.buscarEstudiantePorNombre(nombre);
+
+        if (estudiante == null) return;
+
+        lblNombre.setText(estudiante.getNombre());
+
         txtInformacion.setText(
-                //Ejemplo
-                "\nMaterias impartidas: \n   - Matemáticas\n   - Física\n\n" +
-                        "Tarifa por hora: \n   - $15.000\n\n" +
-                        "Capacidad máxima por materia: \n   - 5 estudiantes\n\n" +
-                        "Bloques de disponibilidad: \n   - Lunes a Miércoles (14:00 - 18:00)"
+                "ID: " + estudiante.getId() + "\n\n" +
+                        "Correo: " + estudiante.getCorreo() + "\n\n" +
+                        "Teléfono: " + estudiante.getTelefono()
         );
+    }
+    @Override
+    public void actualizar() {
+        cargarEstudiantes();
     }
 }

@@ -21,6 +21,66 @@ public class Controlador extends Observable{
         this.reservas= new ArrayList<>();
     }
 
+    public void confirmarReserva(Reserva reserva){
+
+        reserva.confirmar();
+
+        notificarObservadores();
+    }
+
+    public void refrescarUI() {
+        notificarObservadores();
+    }
+
+    public void registrarTutor(Tutor tutor) {
+        if (tutor != null) {
+            tutores.add(tutor);
+            notificarObservadores();
+        }
+    }
+
+    public void registrarEstudiante(Estudiante estudiante) {
+        if (estudiante != null) {
+            estudiantes.add(estudiante);
+            notificarObservadores();
+        }
+    }
+
+    public void eliminarTutor(Tutor tutor) {
+        if (tutor != null) {
+            tutores.remove(tutor);
+            notificarObservadores();
+        }
+    }
+
+    public void eliminarEstudiante(Estudiante estudiante) {
+        if (estudiante != null) {
+            estudiantes.remove(estudiante);
+            notificarObservadores();
+        }
+    }
+
+    public Tutor buscarTutorPorNombre(String nombre) {
+
+        for (Tutor tutor : tutores) {
+            if (tutor.getNombre().equals(nombre)) {
+                return tutor;
+            }
+        }
+
+        return null;
+    }
+
+    public Estudiante buscarEstudiantePorNombre(String nombre) {
+
+        for (Estudiante estudiante : estudiantes) {
+            if (estudiante.getNombre().equals(nombre)) {
+                return estudiante;
+            }
+        }
+
+        return null;
+    }
 
     public void registrarReserva(String tipo, String idReserva, Estudiante estudiante, Tutor tutor, String materia, String horario, String detalleExtra) {
 
