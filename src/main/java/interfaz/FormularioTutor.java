@@ -7,8 +7,8 @@ public class FormularioTutor extends JDialog {
     private JTextField txtNombre;
     private JTextField txtCorreo;
     private JTextField txtTarifa;
-    private JTextField txtMateria;
-    private JTextField txtHorario;
+    private JComboBox<String> cbMateria;
+    private JComboBox<String> cbHorario;
     private boolean guardado = false;
 
     public FormularioTutor(Window parent) {
@@ -32,35 +32,35 @@ public class FormularioTutor extends JDialog {
         txtTarifa = new JTextField();
         panelDatos.add(txtTarifa);
 
+        //Desplegable materia
         panelDatos.add(new JLabel("Materia:"));
-        txtMateria = new JTextField();
-        panelDatos.add(txtMateria);
+        String[] materiasBase = {"Cálculo I", "Cálculo II", "Cálculo III", "Programación", "Física I", "Física II", "Física III"};
+        cbMateria = new JComboBox<>(materiasBase);
+        panelDatos.add(cbMateria);
 
-        panelDatos.add(new JLabel("Horario Disponible"));
-        txtHorario = new JTextField();
-        panelDatos.add(txtHorario);
+        //Desplegable horarios
+        panelDatos.add(new JLabel("Horario Inicial:"));
+        String[] horariosBase = {"LUN-10:00", "LUN-15:00", "MAR-10:00", "MAR-15:00", "MIE-12:00", "JUE-09:00", "VIE-16:00"};
+        cbHorario = new JComboBox<>(horariosBase);
+        panelDatos.add(cbHorario);
 
         add(panelDatos, BorderLayout.CENTER);
 
-        // Panel de botones
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton btnGuardar = new JButton("Guardar");
         JButton btnCancelar = new JButton("Cancelar");
 
         btnGuardar.addActionListener(e -> {
-            if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtTarifa.getText().isBlank() ||
-                    txtMateria.getText().isBlank() || txtHorario.getText().isBlank()) {
-                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtTarifa.getText().isBlank()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos de texto.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
             try {
                 Double.parseDouble(txtTarifa.getText().trim());
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "La tarifa debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
             guardado = true;
             dispose();
         });
@@ -72,6 +72,7 @@ public class FormularioTutor extends JDialog {
         add(panelBotones, BorderLayout.SOUTH);
     }
 
+    //Constructor edicion
     public FormularioTutor(Window parent, logica.modelos.Tutor tutor) {
         this(parent);
         if (tutor != null) {
@@ -80,15 +81,9 @@ public class FormularioTutor extends JDialog {
             txtCorreo.setText(tutor.getCorreo());
             txtTarifa.setText(String.valueOf(tutor.getTarifaHora()));
 
-            txtMateria.setEnabled(false);
-            txtHorario.setEnabled(false);
-
-            if (!tutor.getMaterias().isEmpty()) {
-                txtMateria.setText(tutor.getMaterias().keySet().iterator().next());
-            }
-            if (!tutor.getHorariosDisponibles().isEmpty()) {
-                txtHorario.setText(tutor.getHorariosDisponibles().iterator().next());
-            }
+            // Se deshabilitan los dropdowns porque en edición se usarán los botones de gestión
+            cbMateria.setEnabled(false);
+            cbHorario.setEnabled(false);
         }
     }
 
@@ -96,6 +91,6 @@ public class FormularioTutor extends JDialog {
     public String getNombre() { return txtNombre.getText().trim(); }
     public String getCorreo() { return txtCorreo.getText().trim(); }
     public double getTarifa() { return Double.parseDouble(txtTarifa.getText().trim()); }
-    public String getMateria() { return txtMateria.getText().trim(); }
-    public String getHorario() { return txtHorario.getText().trim(); }
+    public String getMateria() { return (String) cbMateria.getSelectedItem(); }
+    public String getHorario() { return (String) cbHorario.getSelectedItem(); }
 }

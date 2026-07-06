@@ -98,6 +98,21 @@ public class PanelTutores extends JPanel implements InterfazObserver {
         panelDerecho.add(txtInformacion, BorderLayout.CENTER);
 
 
+        JPanel panelAccionesTutor = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        JButton btnGestionarMaterias = new JButton("Gestionar Materias");
+        JButton btnGestionarHorarios = new JButton("Gestionar Horarios");
+
+        //deshabilitado si no se selecciona tutor
+        btnGestionarMaterias.setEnabled(false);
+        btnGestionarHorarios.setEnabled(false);
+
+        panelAccionesTutor.add(btnGestionarMaterias);
+        panelAccionesTutor.add(btnGestionarHorarios);
+
+        panelDerecho.add(panelAccionesTutor, BorderLayout.SOUTH);
+
+
+
         //Listener click de la lista
         listaTutores.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -106,6 +121,9 @@ public class PanelTutores extends JPanel implements InterfazObserver {
                     String seleccionado = listaTutores.getSelectedValue();
                     if (seleccionado != null) {
                         actualizarDetalles(seleccionado);
+
+                        btnGestionarMaterias.setEnabled(true);
+                        btnGestionarHorarios.setEnabled(true);
                     }
                 }
             }
