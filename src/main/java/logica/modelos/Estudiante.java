@@ -7,6 +7,7 @@ package logica.modelos;
  * @author Antonia-FSR
  */
 public class Estudiante {
+    private static int contadorId= 1;
     /** Identificador unico del estudiante (por ejemplo, RUT o matrícula). */
     private String id;
 
@@ -23,13 +24,12 @@ public class Estudiante {
      * Constructor principal de la clase Estudiante.
      * Inicializa una nueva instancia con todos los datos personales requeridos.
      *
-     * @param id       El identificador único del estudiante.
      * @param nombre   El nombre completo del estudiante.
      * @param correo   El correo electrónico de contacto.
      * @param telefono El número de teléfono de contacto.
      */
-    public Estudiante(String id, String nombre, String correo, String telefono) {
-        this.id = id;
+    public Estudiante(String nombre, String correo, String telefono) {
+        this.id = "EST-" + (contadorId++);
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;

@@ -125,22 +125,18 @@ public class PanelTutores extends JPanel implements InterfazObserver {
     }
 
     private void eliminarTutor() {
-
-        // 1. Verificar selección
         String seleccionado = listaTutores.getSelectedValue();
         if (seleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un tutor");
             return;
         }
 
-        // 2. Buscar tutor
         Tutor tutor = controlador.buscarTutorPorNombre(seleccionado);
         if (tutor == null) {
             JOptionPane.showMessageDialog(this, "Tutor no encontrado");
             return;
         }
 
-        // 3. Confirmación
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro de eliminar este tutor?",
@@ -150,95 +146,52 @@ public class PanelTutores extends JPanel implements InterfazObserver {
 
         if (confirmacion != JOptionPane.YES_OPTION) return;
 
-        // 4. Eliminar
         controlador.eliminarTutor(tutor);
 
-        // 5. Mensaje
         JOptionPane.showMessageDialog(this, "Tutor eliminado correctamente");
     }
 
     private void editarTutor() {
 
-        // 1. Verificar selección
         String seleccionado = listaTutores.getSelectedValue();
         if (seleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un tutor");
             return;
         }
 
-        // 2. Buscar tutor en controlador
         Tutor tutor = controlador.buscarTutorPorNombre(seleccionado);
         if (tutor == null) {
             JOptionPane.showMessageDialog(this, "Tutor no encontrado");
             return;
         }
 
-        // 3. Pedir nuevos datos (solo lo editable)
-        String nuevoNombre = JOptionPane.showInputDialog(this, "Nuevo nombre del tutor:", tutor.getNombre());
-        if (nuevoNombre == null || nuevoNombre.isBlank()) return;
+        FormularioTutor form = new FormularioTutor(SwingUtilities.getWindowAncestor(this), tutor);
+        form.setVisible(true);
 
-        String nuevoCorreo = JOptionPane.showInputDialog(this, "Nuevo correo:", tutor.getCorreo());
-        if (nuevoCorreo == null || nuevoCorreo.isBlank()) return;
+        if (form.isGuardado()) {
+            tutor.setNombre(form.getNombre());
+            tutor.setCorreo(form.getCorreo());
+            tutor.setTarifaHora(form.getTarifa());
 
-        String nuevaTarifaStr = JOptionPane.showInputDialog(this, "Nueva tarifa por hora:", tutor.getTarifaHora());
-        if (nuevaTarifaStr == null || nuevaTarifaStr.isBlank()) return;
-
-        double nuevaTarifa;
-
-        try {
-            nuevaTarifa = Double.parseDouble(nuevaTarifaStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Tarifa inválida");
-            return;
+            controlador.refrescarUI();
+            JOptionPane.showMessageDialog(this, "Tutor actualizado correctamente");
         }
-
-        // 4. Aplicar cambios
-        tutor.setNombre(nuevoNombre);
-        tutor.setCorreo(nuevoCorreo);
-        tutor.setTarifaHora(nuevaTarifa);
-
-        // 5. Refrescar interfaz
-        controlador.refrescarUI();
-
-        // 6. Mensaje final
-        JOptionPane.showMessageDialog(this, "Tutor actualizado correctamente");
     }
 
     private void agregarTutor() {
+        FormularioTutor form = new FormularioTutor(SwingUtilities.getWindowAncestor(this));
+        form.setVisible(true);
 
-        String id = JOptionPane.showInputDialog(this, "ID del tutor:");
-        if (id == null || id.isBlank()) return;
+        if (form.isGuardado()) {
 
-        String nombre = JOptionPane.showInputDialog(this, "Nombre del tutor:");
-        if (nombre == null || nombre.isBlank()) return;
+            Tutor nuevoTutor = new Tutor(form.getNombre(), form.getCorreo(), form.getTarifa());
 
-        String correo = JOptionPane.showInputDialog(this, "Correo:");
-        if (correo == null || correo.isBlank()) return;
+            nuevoTutor.agregarMateria(form.getMateria(), 5);
+            nuevoTutor.agregarDisponibilidad(form.getHorario());
 
-        String tarifaStr = JOptionPane.showInputDialog(this, "Tarifa por hora:");
-        if (tarifaStr == null || tarifaStr.isBlank()) return;
-
-        double tarifa;
-
-        try {
-            tarifa = Double.parseDouble(tarifaStr);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Tarifa inválida");
-            return;
+            controlador.registrarTutor(nuevoTutor);
+            JOptionPane.showMessageDialog(this, "Tutor agregado correctamente");
         }
-
-        // 1. Crear tutor
-        Tutor nuevo = new Tutor(id, nombre, correo, tarifa);
-
-        // 2. Agregar datos básicos (opcional demo)
-        nuevo.agregarMateria("General", 5);
-        nuevo.agregarDisponibilidad("LUN 10:00");
-
-        // 3. Registrar en controlador
-        controlador.registrarTutor(nuevo);
-
-        // 4. Mensaje
-        JOptionPane.showMessageDialog(this, "Tutor agregado correctamente");
     }
 
     private void actualizarDetalles(String nombre) {

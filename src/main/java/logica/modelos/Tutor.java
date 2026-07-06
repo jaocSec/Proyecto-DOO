@@ -13,6 +13,7 @@ import java.util.Set;
  * @author Antonia-FSR
  */
 public class Tutor {
+    private static int contadorId= 1;
     /** Identificador único del tutor (RUT o ID interno). */
     private String id;
 
@@ -42,13 +43,12 @@ public class Tutor {
      * Constructor principal de la clase Tutor.
      * Inicializa las colecciones vacías listas para ser pobladas.
      *
-     * @param id         El identificador único del tutor.
      * @param nombre     El nombre completo del profesional.
      * @param correo     El correo electrónico de contacto.
      * @param tarifaHora La tarifa base por hora de clase.
      */
-    public Tutor(String id, String nombre, String correo, double tarifaHora) {
-        this.id = id;
+    public Tutor(String nombre, String correo, double tarifaHora) {
+        this.id = "TUT-" + (contadorId++);
         this.nombre = nombre;
         this.correo = correo;
         this.tarifaHora = tarifaHora;

@@ -168,69 +168,40 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
     }
 
     private void editarEstudiante() {
-
-        // 1. Selección
         String seleccionado = listaEstudiantes.getSelectedValue();
         if (seleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un estudiante");
             return;
         }
 
-        // 2. Buscar estudiante
         Estudiante est = controlador.buscarEstudiantePorNombre(seleccionado);
         if (est == null) {
             JOptionPane.showMessageDialog(this, "Estudiante no encontrado");
             return;
         }
 
-        // 3. Pedir datos nuevos
-        String nuevoNombre = JOptionPane.showInputDialog(this, "Nuevo nombre:", est.getNombre());
-        if (nuevoNombre == null || nuevoNombre.isBlank()) return;
+        FormularioEstudiante form = new FormularioEstudiante(SwingUtilities.getWindowAncestor(this), est);
+        form.setVisible(true);
 
-        String nuevoCorreo = JOptionPane.showInputDialog(this, "Nuevo correo:", est.getCorreo());
-        if (nuevoCorreo == null || nuevoCorreo.isBlank()) return;
+        if (form.isGuardado()) {
+            est.setNombre(form.getNombre());
+            est.setCorreo(form.getCorreo());
+            est.setTelefono(form.getTelefono());
 
-        String nuevoTelefono = JOptionPane.showInputDialog(this, "Nuevo teléfono:", est.getTelefono());
-        if (nuevoTelefono == null || nuevoTelefono.isBlank()) return;
-
-        // 4. Aplicar cambios
-        est.setNombre(nuevoNombre);
-        est.setCorreo(nuevoCorreo);
-        est.setTelefono(nuevoTelefono);
-
-        // 5. Refrescar UI
-        controlador.refrescarUI();
-
-        // 6. Mensaje final
-        JOptionPane.showMessageDialog(this, "Estudiante actualizado correctamente");
+            controlador.refrescarUI();
+            JOptionPane.showMessageDialog(this, "Estudiante actualizado correctamente");
+        }
     }
 
     private void agregarEstudiante() {
+        FormularioEstudiante form = new FormularioEstudiante(SwingUtilities.getWindowAncestor(this));
+        form.setVisible(true);
 
-        // 1. Pedir ID
-        String id = JOptionPane.showInputDialog(this, "ID del estudiante:");
-        if (id == null || id.isBlank()) return;
-
-        // 2. Pedir nombre
-        String nombre = JOptionPane.showInputDialog(this, "Nombre del estudiante:");
-        if (nombre == null || nombre.isBlank()) return;
-
-        // 3. Pedir correo
-        String correo = JOptionPane.showInputDialog(this, "Correo del estudiante:");
-        if (correo == null || correo.isBlank()) return;
-
-        // 4. Pedir teléfono
-        String telefono = JOptionPane.showInputDialog(this, "Teléfono del estudiante:");
-        if (telefono == null || telefono.isBlank()) return;
-
-        // 5. Crear estudiante
-        Estudiante nuevo = new Estudiante(id, nombre, correo, telefono);
-
-        // 6. Registrar en controlador
-        controlador.registrarEstudiante(nuevo);
-
-        // 7. Mensaje final
-        JOptionPane.showMessageDialog(this, "Estudiante agregado correctamente");
+        if (form.isGuardado()) {
+            Estudiante nuevo = new Estudiante(form.getNombre(), form.getCorreo(), form.getTelefono());
+            controlador.registrarEstudiante(nuevo);
+            JOptionPane.showMessageDialog(this, "Estudiante agregado correctamente");
+        }
     }
 
     private void actualizarDetalles(String nombre) {
