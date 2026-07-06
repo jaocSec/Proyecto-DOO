@@ -82,9 +82,9 @@ public class Controlador extends Observable{
         return null;
     }
 
-    public void registrarReserva(String tipo, String idReserva, Estudiante estudiante, Tutor tutor, String materia, String horario, String detalleExtra) {
+    public void registrarReserva(String tipo, String idReserva, Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario, String detalleExtra) {
 
-        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, idReserva, estudiante, tutor, materia, horario, detalleExtra);
+        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, idReserva, estudiante, tutor, materia, fecha, horario, detalleExtra);
         reservas.add(nuevaReserva);
 
         notificarObservadores();

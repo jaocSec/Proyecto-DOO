@@ -4,8 +4,8 @@ public class ReservaVirtual extends Reserva{
     private String linkReunion;
     private String plataforma;
 
-    public ReservaVirtual(String idReserva, Estudiante estudiante, Tutor tutor, String materia, String horario, String plataforma){
-        super(idReserva, estudiante, tutor, materia, horario);
+    public ReservaVirtual(String idReserva, Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario, String plataforma){
+        super(idReserva, estudiante, tutor, materia, fecha, horario);
 
         this.linkReunion= "link"; //Placeholder
         this.plataforma= plataforma;

@@ -12,6 +12,7 @@ public class PanelReservas extends JPanel implements InterfazObserver {
     private Controlador controlador;
     private JComboBox<String> comboEstudiantes;
     private JComboBox<String> comboTutores;
+    private JButton btnNuevaReserva;
     private JButton btnLimpiarFiltros;
     private JButton btnCancelarClase;
     private JTable tablaReservas;
@@ -39,6 +40,11 @@ public class PanelReservas extends JPanel implements InterfazObserver {
         comboTutores = new JComboBox<>(new String[]{"Todos", "Juan Pérez", "Ana Gómez", "Carlos Silva"}); //Ejemplos
         comboTutores.setPreferredSize(new Dimension(180, 30));
         panelFiltros.add(comboTutores);
+
+        //Agrega Reserva
+        btnNuevaReserva = new JButton("Nueva Reserva");
+        panelFiltros.add(btnNuevaReserva);
+        btnNuevaReserva.addActionListener(e -> abrirFormularioReserva());
 
         //Reset filtros
         btnLimpiarFiltros = new JButton("Limpiar Filtros");
@@ -113,6 +119,19 @@ public class PanelReservas extends JPanel implements InterfazObserver {
         add(panelAcciones, BorderLayout.SOUTH);
     }
 
+    private void abrirFormularioReserva() {
+        Window ventanaPadre =
+                SwingUtilities.getWindowAncestor(this);
+
+        DetalleReservas formulario =
+                new DetalleReservas(
+                        ventanaPadre,
+                        controlador
+                );
+
+        formulario.setVisible(true);
+    }
+
     private void cancelarReserva() {
 
         int fila = tablaReservas.getSelectedRow();
@@ -139,17 +158,22 @@ public class PanelReservas extends JPanel implements InterfazObserver {
 
             modeloTabla.addRow(new Object[]{
 
-                    "", // fecha
+                    reserva.getFecha(),
 
                     reserva.getHorario(),
 
                     reserva.getMateria(),
 
-                    reserva.getEstudiante().getNombre(),
+                    reserva.getEstudiante() != null
+                            ? reserva.getEstudiante().getNombre()
+                            : "",
 
-                    reserva.getTutor().getNombre(),
+                    reserva.getTutor() != null
+                            ? reserva.getTutor().getNombre()
+                            : "",
 
-                    reserva.getEstado()
+                    reserva.getEstadoActual().getClass().getSimpleName()
+                            .replace("Estado","")
 
             });
 

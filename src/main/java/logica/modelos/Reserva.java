@@ -14,6 +14,7 @@ public abstract class Reserva {
     protected Estudiante estudiante;
     protected Tutor tutor;
     protected String materia;
+    protected String fecha;
     protected String horario;
     protected EstadoReserva estadoActual;
     /**
@@ -26,11 +27,12 @@ public abstract class Reserva {
      * @param materia    El nombre de la materia a estudiar.
      * @param horario    La fecha y hora acordada para la sesión.
      */
-    public Reserva(String idReserva, Estudiante estudiante, Tutor tutor, String materia, String horario) {
+    public Reserva(String idReserva, Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario) {
         this.idReserva = idReserva;
         this.estudiante = estudiante;
         this.tutor = tutor;
         this.materia = materia;
+        this.fecha = fecha;
         this.horario = horario;
         this.estadoActual = new EstadoPendiente();
     }
@@ -104,6 +106,10 @@ public abstract class Reserva {
 
     public String getMateria() {
         return materia;
+    }
+
+    public String getFecha() {
+        return fecha;
     }
 
     public String getHorario() {
