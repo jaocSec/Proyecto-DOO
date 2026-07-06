@@ -6,7 +6,7 @@ public class PanelMenu extends JPanel {
     public JButton btnInicio= new JButton("Inicio");
     public JButton btnTutores= new JButton("Tutores");
     public JButton btnEstudiantes= new JButton("Estudiantes");
-    public JButton btnCalendario= new JButton("Calendario");
+    public JButton btnReservas= new JButton("Reservas");
 
     public PanelMenu(){
         setBackground(new Color(43, 43, 43));
@@ -24,11 +24,11 @@ public class PanelMenu extends JPanel {
         add(btnInicio, gbc);
         add(btnTutores, gbc);
         add(btnEstudiantes, gbc);
-        add(btnCalendario, gbc);
+        add(btnReservas, gbc);
     }
 
     public JButton getBtnInicio(){return btnInicio;}
     public JButton getBtnTutores(){return btnTutores;}
     public JButton getBtnEstudiantes(){return btnEstudiantes;}
-    public JButton getBtnCalendario(){return btnCalendario;}
+    public JButton getBtnCalendario(){return btnReservas;}
 }

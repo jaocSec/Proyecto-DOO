@@ -69,6 +69,7 @@ public class DetalleReservas extends JDialog {
                     (Estudiante) comboEstudiantes.getSelectedItem(),
                     (Tutor) comboTutores.getSelectedItem(),
                     txtMateria.getText(),
+                    "06-07-2026",
                     txtHorario.getText(),
                     "Sala 201"
             );
