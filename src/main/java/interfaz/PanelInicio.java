@@ -1,10 +1,16 @@
 package interfaz;
 
+import logica.Controlador;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class PanelInicio extends JPanel {
-    public PanelInicio() {
+    private Controlador controlador;
+
+    public PanelInicio(Controlador controlador) {
+
+        this.controlador = controlador;
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 

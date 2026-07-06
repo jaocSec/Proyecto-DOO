@@ -1,10 +1,13 @@
 package interfaz;
 
+import logica.Controlador;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class PanelReservas extends JPanel {
+    private Controlador controlador;
     private JComboBox<String> comboEstudiantes;
     private JComboBox<String> comboTutores;
     private JButton btnLimpiarFiltros;
@@ -12,7 +15,9 @@ public class PanelReservas extends JPanel {
     private JTable tablaReservas;
     private DefaultTableModel modeloTabla;
 
-    public PanelReservas() {
+    public PanelReservas(Controlador controlador) {
+
+        this.controlador = controlador;
 
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));

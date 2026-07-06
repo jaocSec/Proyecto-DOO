@@ -1,11 +1,14 @@
 package interfaz;
 
+import logica.Controlador;
+
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class PanelTutores extends JPanel {
+    private Controlador controlador;
     private DefaultListModel<String> modeloLista;
     private JList<String> listaTutores;
     private JButton btnAgregar, btnEditar, btnEliminar;
@@ -15,7 +18,9 @@ public class PanelTutores extends JPanel {
     private JLabel lblNombre;
     private JTextArea txtInformacion;
 
-    public PanelTutores() {
+    public PanelTutores(Controlador controlador) {
+
+        this.controlador = controlador;
         setLayout(new BorderLayout());
 
         //Panel Lista (izquierdo)
