@@ -96,16 +96,8 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
         txtInformacion.setOpaque(false);
         txtInformacion.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnBuscarTutor = new JButton("Buscar Tutor Compatible");
-        btnBuscarTutor.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        btnBuscarTutor.setPreferredSize(new Dimension(250, 40));
-        btnBuscarTutor.setEnabled(false);
-        panelBoton.add(btnBuscarTutor);
-
         panelDerecho.add(panelHeader, BorderLayout.NORTH);
         panelDerecho.add(txtInformacion, BorderLayout.CENTER);
-        panelDerecho.add(panelBoton, BorderLayout.SOUTH);
 
 
         //Listener click de la lista

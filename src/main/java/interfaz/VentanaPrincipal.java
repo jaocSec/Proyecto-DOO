@@ -39,6 +39,9 @@ public class VentanaPrincipal extends JFrame{
 
         panelMenu.getBtnCalendario().addActionListener(e ->
                 cambiarPanel(new PanelReservas(controlador)));
+
+        panelMenu.getBtnConfiguracion().addActionListener(e ->
+                cambiarPanel(new PanelConfiguracion(controlador)));
     }
 
     private void cambiarPanel(JPanel nuevoPanel){

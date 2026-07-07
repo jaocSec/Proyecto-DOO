@@ -36,7 +36,33 @@ public class Catalogos {
     public List<String> getHorarios() {return horariosDisponibles;}
     public List<String> getMaterias() {return materiasDisponibles;}
 
-    public void agregarMateria(String materia) { materiasDisponibles.add(materia); }
-    public void removerMateria(String materia) { materiasDisponibles.remove(materia); }
+    public boolean agregarMateria(String materia) {
+        {
+            for (String m : materiasDisponibles) {
+                if (m.equalsIgnoreCase(materia)) {
+                    return false;
+                }
+            }
+            materiasDisponibles.add(materia);
+            return true;
+        }
+    }
+
+    public void removerMateria(String materia) {materiasDisponibles.remove(materia);}
+
+    public boolean agregarHorario(String horario) {
+        {
+            for (String h : horariosDisponibles) {
+                if (h.equalsIgnoreCase(horario)) {
+                    return false;
+                }
+            }
+            horariosDisponibles.add(horario);
+            return true;
+        }
+    }
+
+    public void removerHorario(String horario) {horariosDisponibles.remove(horario);}
+
 
 }
