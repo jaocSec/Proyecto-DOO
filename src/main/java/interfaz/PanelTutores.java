@@ -72,13 +72,9 @@ public class PanelTutores extends JPanel implements InterfazObserver {
 
         // Nombre
         JPanel panelHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-
-        lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 60));
-
         lblNombre = new JLabel("Seleccione un tutor");
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
-        panelHeader.add(lblAvatar);
         panelHeader.add(lblNombre);
 
         //Información panel derecho

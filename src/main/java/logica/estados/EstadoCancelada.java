@@ -8,7 +8,7 @@ import logica.modelos.Reserva;
  *
  * @author Antonia-FSR
  */
-public class EstadoCancelada implements EstadoReserva {
+public class EstadoCancelada implements EstadoReserva, java.io.Serializable {
     /**
      * Intenta confirmar la reserva. Produce un error porque una reserva
      * cancelada no puede ser reactivada.

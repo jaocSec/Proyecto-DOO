@@ -12,9 +12,9 @@ import java.util.Set;
  *
  * @author Antonia-FSR
  */
-public class Tutor {
+public class Tutor implements java.io.Serializable {
     private static int contadorId= 1;
-    /** Identificador único del tutor (RUT o ID interno). */
+    /** Identificador único del tutor (ID interno). */
     private String id;
 
     /** Nombre completo del tutor. */
@@ -55,8 +55,6 @@ public class Tutor {
         this.materias = new HashMap<>();
         this.horariosDisponibles = new HashSet<>();
     }
-
-    // --- Métodos de Lógica de Negocio ---
 
     /**
      * Registra una nueva materia que el tutor está capacitado para impartir,
@@ -114,11 +112,6 @@ public class Tutor {
         return cantidadEstudiantes <= cupoMaximo;
     }
 
-    // --- Getters y Setters Básicos ---
-
-    public String getId() { return id; }
-    public void setId(String id) { this.id = id; }
-
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
@@ -133,6 +126,6 @@ public class Tutor {
 
     @Override
     public String toString() {
-        return "Tutor [" + id + "] - Nombre: " + nombre + " | Tarifa: $" + tarifaHora + "/hr";
+        return "Nombre: " + nombre + " | Tarifa: $" + tarifaHora + "/hr";
     }
 }

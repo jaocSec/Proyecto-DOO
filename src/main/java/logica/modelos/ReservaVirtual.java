@@ -1,6 +1,6 @@
 package logica.modelos;
 
-public class ReservaVirtual extends Reserva{
+public class ReservaVirtual extends Reserva implements java.io.Serializable{
     private String linkReunion;
     private String plataforma;
 

@@ -3,7 +3,7 @@ package logica.modelos;
 /**
  * Representa una tutoría que se realizará físicamente en las instalaciones.
  */
-public class ReservaPresencial extends Reserva {
+public class ReservaPresencial extends Reserva  implements java.io.Serializable {
 
     private String sala;
 

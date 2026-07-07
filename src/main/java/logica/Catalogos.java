@@ -2,7 +2,7 @@ package logica;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Catalogos {
+public class Catalogos  implements java.io.Serializable {
     private List<String> materiasDisponibles = new ArrayList<>();
     private List<String> horariosDisponibles = new ArrayList<>();
 

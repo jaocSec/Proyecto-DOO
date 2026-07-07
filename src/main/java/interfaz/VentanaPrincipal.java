@@ -16,7 +16,14 @@ public class VentanaPrincipal extends JFrame{
 
         setTitle("Sistema de Reserva de Clases Particulares");
         setMinimumSize(new Dimension(1000, 700));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);//Guardado de datos
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                controlador.guardarDatos();
+                System.exit(0);
+            }
+        });
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 

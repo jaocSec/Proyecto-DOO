@@ -22,6 +22,7 @@ public class Controlador extends Observable{
         this.estudiantes= new ArrayList<>();
         this.tutores= new ArrayList<>();
         this.reservas= new ArrayList<>();
+        cargarDatos();
     }
 
     public void confirmarReserva(Reserva reserva){
@@ -128,6 +129,32 @@ public class Controlador extends Observable{
             }
         }
 
+    }
+
+    public void guardarDatos() {
+        try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream("datos_sistema.dat"))) {
+            oos.writeObject(this.estudiantes);
+            oos.writeObject(this.tutores);
+            oos.writeObject(this.reservas);
+            oos.writeObject(this.catalogo);
+            System.out.println("Datos guardados exitosamente.");
+        } catch (Exception e) {
+            System.err.println("Error al guardar los datos: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void cargarDatos() {
+        try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream("datos_sistema.dat"))) {
+            this.estudiantes = (java.util.List<Estudiante>) ois.readObject();
+            this.tutores = (java.util.List<Tutor>) ois.readObject();
+            this.reservas = (java.util.List<Reserva>) ois.readObject();
+            this.catalogo = (Catalogos) ois.readObject();
+            System.out.println("Datos cargados exitosamente");
+        } catch (Exception e) {
+            System.out.println("Archivo de datos no existente");
+        }
     }
 
     //GETTERS

@@ -8,7 +8,7 @@ import logica.modelos.Reserva;
  *
  * @author Antonia-FSR
  */
-public class EstadoConfirmada implements EstadoReserva {
+public class EstadoConfirmada implements EstadoReserva, java.io.Serializable {
     /**
      * Intenta confirmar una reserva que ya está confirmada.
      * Notifica que la acción no es válida en este estado.

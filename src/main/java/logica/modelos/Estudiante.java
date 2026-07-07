@@ -6,7 +6,7 @@ package logica.modelos;
  *
  * @author Antonia-FSR
  */
-public class Estudiante {
+public class Estudiante  implements java.io.Serializable {
     private static int contadorId= 1;
     /** Identificador unico del estudiante (por ejemplo, RUT o matrícula). */
     private String id;

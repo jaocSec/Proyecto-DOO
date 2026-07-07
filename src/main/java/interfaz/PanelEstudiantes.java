@@ -74,11 +74,9 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
 
         // Nombre
         JPanel panelHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-
         lblNombre = new JLabel("Seleccione un estudiante");
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 22));
 
-        panelHeader.add(lblAvatar);
         panelHeader.add(lblNombre);
 
         //Información panel derecho
@@ -120,21 +118,18 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
 
     private void eliminarEstudiante() {
 
-        // 1. Selección
         String seleccionado = listaEstudiantes.getSelectedValue();
         if (seleccionado == null) {
             JOptionPane.showMessageDialog(this, "Seleccione un estudiante");
             return;
         }
 
-        // 2. Buscar
         Estudiante est = controlador.buscarEstudiantePorNombre(seleccionado);
         if (est == null) {
             JOptionPane.showMessageDialog(this, "Estudiante no encontrado");
             return;
         }
 
-        // 3. Confirmación
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
                 "¿Está seguro de eliminar este estudiante?",
@@ -144,10 +139,7 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
 
         if (confirmacion != JOptionPane.YES_OPTION) return;
 
-        // 4. Eliminar
         controlador.eliminarEstudiante(est);
-
-        // 5. Mensaje
         JOptionPane.showMessageDialog(this, "Estudiante eliminado correctamente");
     }
 

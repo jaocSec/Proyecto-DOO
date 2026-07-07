@@ -8,7 +8,7 @@ import logica.modelos.Reserva;
  *
  * @author Antonia-FSR
  */
-public class EstadoPendiente implements EstadoReserva {
+public class EstadoPendiente implements EstadoReserva, java.io.Serializable {
     /**
      * Confirma la reserva y transita hacia el estado EstadoConfirmada.
      *

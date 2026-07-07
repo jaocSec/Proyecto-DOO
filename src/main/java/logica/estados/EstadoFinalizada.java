@@ -8,7 +8,7 @@ import logica.modelos.Reserva;
  *
  * @author Antonia-FSR
  */
-public class EstadoFinalizada implements EstadoReserva {
+public class EstadoFinalizada implements EstadoReserva, java.io.Serializable {
     /**
      * Intenta confirmar la reserva. Produce un error porque la tutoría
      * ya concluyó en el pasado.
