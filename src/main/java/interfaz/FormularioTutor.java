@@ -93,8 +93,10 @@ public class FormularioTutor extends JDialog {
         if (tutor != null) {
             setTitle("Editar Tutor");
             txtNombre.setText(tutor.getNombre());
+            txtRut.setText(tutor.getRUT());
             txtCorreo.setText(tutor.getCorreo());
             txtTarifa.setText(String.valueOf(tutor.getTarifaHora()));
+            txtCupo.setText(String.valueOf(tutor.getCupoMaximo()));
 
             //Se deshabilitan los dropdowns porque en edición se usarán los botones de gestión
             cbMateria.setEnabled(false);

@@ -57,6 +57,7 @@ public class FormularioEstudiante extends JDialog {
         add(panelBotones, BorderLayout.SOUTH);
     }
 
+    //Constructor edición
     public FormularioEstudiante(Window parent, logica.modelos.Estudiante estudiante) {
         this(parent);
         if (estudiante != null) {
@@ -64,6 +65,7 @@ public class FormularioEstudiante extends JDialog {
             txtNombre.setText(estudiante.getNombre());
             txtCorreo.setText(estudiante.getCorreo());
             txtTelefono.setText(estudiante.getTelefono());
+            txtRut.setText(estudiante.getRUT());
         }
     }
 
