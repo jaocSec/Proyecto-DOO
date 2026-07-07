@@ -5,6 +5,7 @@ import logica.ReservaFactory;
 import logica.modelos.Estudiante;
 import logica.modelos.Reserva;
 import logica.modelos.Tutor;
+import logica.modelos.ReservaVirtual;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,7 @@ public class DetalleReservas extends JDialog {
     private JComboBox<String> cbTutor;
     private JComboBox<String> cbTipoReserva;
     private JTextField txtDetalleExtra;
+    private JTextField txtEnlace;
 
     private JSpinner spinnerFecha;
     private JButton btnGuardar;
@@ -40,11 +42,11 @@ public class DetalleReservas extends JDialog {
         super(parent, "Crear Nueva Reserva", Dialog.ModalityType.APPLICATION_MODAL);
         this.controlador = controlador;
 
-        setSize(450, 400);
+        setSize(450, 425);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
 
-        JPanel panelFormulario = new JPanel(new GridLayout(8, 2, 15, 20));
+        JPanel panelFormulario = new JPanel(new GridLayout(9, 2, 15, 20));
         panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         //Selección estudiante
@@ -81,6 +83,11 @@ public class DetalleReservas extends JDialog {
         panelFormulario.add(lblDetalleExtra);
         panelFormulario.add(txtDetalleExtra);
 
+        JLabel lblEnlace = new JLabel("Enlace:");
+        txtEnlace = new JTextField();
+        panelFormulario.add(lblEnlace);
+        panelFormulario.add(txtEnlace);
+
         //Fecha
         panelFormulario.add(new JLabel("Fecha (dd-MM-yyyy):"));
         SpinnerDateModel modeloFecha = new SpinnerDateModel();
@@ -112,12 +119,14 @@ public class DetalleReservas extends JDialog {
         btnCancelar.addActionListener(e -> dispose());
         btnGuardar.addActionListener(e -> registrarReserva());
 
-        //listener para cambiar entre sala o plataforma
+        //listener para cambiar entre sala o plataforma y bloquear el campo del link
         cbTipoReserva.addActionListener(e -> {
             if (cbTipoReserva.getSelectedItem().equals("PRESENCIAL")) {
-                lblDetalleExtra.setText("Sala");
+                lblDetalleExtra.setText("Sala:");
+                txtEnlace.setEnabled(false);
+                txtEnlace.setText("");
             } else {
-                lblDetalleExtra.setText("Plataforma");
+                lblDetalleExtra.setText("Plataforma:");
             }
         });
     }
@@ -151,6 +160,7 @@ public class DetalleReservas extends JDialog {
         String tipo= (String) cbTipoReserva.getSelectedItem();
         String detalleExtra= txtDetalleExtra.getText().trim();
 
+
         java.util.Date fechaSeleccionada = (java.util.Date) spinnerFecha.getValue();
         java.text.SimpleDateFormat formateador = new java.text.SimpleDateFormat("dd-MM-yyyy");
         String fechaStr = formateador.format(fechaSeleccionada);
@@ -180,6 +190,17 @@ public class DetalleReservas extends JDialog {
         }
 
         Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, estudiante, tutor, materia, fechaStr, horario, detalleExtra);
+
+        if (nuevaReserva instanceof ReservaVirtual) {
+            ReservaVirtual rv = (ReservaVirtual) nuevaReserva;
+            String enlaceIngresado = txtEnlace.getText().trim();
+
+            if (enlaceIngresado.isEmpty()) {
+                rv.setLinkReunion("Pendiente");
+            } else {
+                rv.setLinkReunion(enlaceIngresado);
+            }
+        }
 
         controlador.registrarReserva(nuevaReserva);
         JOptionPane.showMessageDialog(this, "Reserva creada exitosamente.");

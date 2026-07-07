@@ -25,7 +25,6 @@ public class ReservaVirtual extends Reserva implements java.io.Serializable{
     public ReservaVirtual(Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario, String plataforma){
         super(estudiante, tutor, materia, fecha, horario);
 
-        this.linkReunion= "link"; //Placeholder
         this.plataforma= plataforma;
     }
 
