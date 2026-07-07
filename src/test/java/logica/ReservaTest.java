@@ -23,7 +23,6 @@ public class ReservaTest {
 
     @Test
     public void testEstadoInicialEsPendiente() {
-        // Verificamos que al crear la reserva, nazca en estado Pendiente
         assertTrue(reserva.getEstadoActual() instanceof EstadoPendiente,
                 "Error: El estado inicial debería ser EstadoPendiente");
     }
