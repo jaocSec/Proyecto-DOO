@@ -16,10 +16,8 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
     private JButton btnAgregar, btnEditar, btnEliminar;
 
     //Componentes panel derecho
-    private JLabel lblAvatar;
     private JLabel lblNombre;
     private JTextArea txtInformacion;
-    private JButton btnBuscarTutor;
 
     private void cargarEstudiantes() {
         modeloLista.clear();
@@ -174,7 +172,7 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
         form.setVisible(true);
 
         if (form.isGuardado()) {
-            Estudiante nuevo = new Estudiante(form.getNombre(), form.getCorreo(), form.getTelefono());
+            Estudiante nuevo = new Estudiante(form.getRUT(), form.getNombre(), form.getCorreo(), form.getTelefono());
             controlador.registrarEstudiante(nuevo);
             JOptionPane.showMessageDialog(this, "Estudiante agregado correctamente");
         }
@@ -189,7 +187,7 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
         lblNombre.setText(estudiante.getNombre());
 
         txtInformacion.setText(
-                "ID: " + estudiante.getId() + "\n\n" +
+                        "RUT: " + estudiante.getRUT() + "\n\n" +
                         "Correo: " + estudiante.getCorreo() + "\n\n" +
                         "Teléfono: " + estudiante.getTelefono()
         );

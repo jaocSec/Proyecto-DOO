@@ -7,6 +7,7 @@ public class FormularioEstudiante extends JDialog {
     private JTextField txtNombre;
     private JTextField txtCorreo;
     private JTextField txtTelefono;
+    private JTextField txtRut;
     private boolean guardado = false;
 
     public FormularioEstudiante(Window parent) {
@@ -15,33 +16,37 @@ public class FormularioEstudiante extends JDialog {
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
 
-        JPanel panelDatos = new JPanel(new GridLayout(3, 2, 10, 15));
+        JPanel panelDatos = new JPanel(new GridLayout(4, 2, 10, 15));
         panelDatos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         panelDatos.add(new JLabel("Nombre Completo:"));
-        txtNombre = new JTextField();
+        txtNombre= new JTextField();
         panelDatos.add(txtNombre);
 
+        panelDatos.add(new JLabel("RUT:"));
+        txtRut= new JTextField();
+        panelDatos.add(txtRut);
+
         panelDatos.add(new JLabel("Correo Electrónico:"));
-        txtCorreo = new JTextField();
+        txtCorreo= new JTextField();
         panelDatos.add(txtCorreo);
 
         panelDatos.add(new JLabel("Teléfono:"));
-        txtTelefono = new JTextField();
+        txtTelefono= new JTextField();
         panelDatos.add(txtTelefono);
 
         add(panelDatos, BorderLayout.CENTER);
 
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton btnGuardar = new JButton("Guardar");
-        JButton btnCancelar = new JButton("Cancelar");
+        JPanel panelBotones= new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton btnGuardar= new JButton("Guardar");
+        JButton btnCancelar= new JButton("Cancelar");
 
         btnGuardar.addActionListener(e -> {
-            if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtTelefono.getText().isBlank()) {
+            if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtTelefono.getText().isBlank() || txtRut.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            guardado = true;
+            guardado= true;
             dispose();
         });
 
@@ -66,4 +71,5 @@ public class FormularioEstudiante extends JDialog {
     public String getNombre() { return txtNombre.getText().trim(); }
     public String getCorreo() { return txtCorreo.getText().trim(); }
     public String getTelefono() { return txtTelefono.getText().trim(); }
+    public String getRUT() {return txtRut.getText().trim();}
 }

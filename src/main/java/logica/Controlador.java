@@ -28,7 +28,6 @@ public class Controlador extends Observable{
     public void confirmarReserva(Reserva reserva){
 
         reserva.confirmar();
-
         notificarObservadores();
     }
 

@@ -13,9 +13,8 @@ import java.util.Set;
  * @author Antonia-FSR
  */
 public class Tutor implements java.io.Serializable {
-    private static int contadorId= 1;
-    /** Identificador único del tutor (ID interno). */
-    private String id;
+    /** Identificador único del tutor (RUT). */
+    private String rut;
 
     /** Nombre completo del tutor. */
     private String nombre;
@@ -47,8 +46,8 @@ public class Tutor implements java.io.Serializable {
      * @param correo     El correo electrónico de contacto.
      * @param tarifaHora La tarifa base por hora de clase.
      */
-    public Tutor(String nombre, String correo, double tarifaHora) {
-        this.id = "TUT-" + (contadorId++);
+    public Tutor(String rut, String nombre, String correo, double tarifaHora) {
+        this.rut = rut;
         this.nombre = nombre;
         this.correo = correo;
         this.tarifaHora = tarifaHora;
@@ -123,6 +122,11 @@ public class Tutor implements java.io.Serializable {
 
     public Map<String, Integer> getMaterias() { return materias; }
     public Set<String> getHorariosDisponibles() { return horariosDisponibles; }
+
+    public String getRUT() {
+        return rut;
+    }
+    public void setRut(String rut) {this.rut = rut;}
 
     @Override
     public String toString() {

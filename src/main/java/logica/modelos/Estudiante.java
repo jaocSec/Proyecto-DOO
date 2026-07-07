@@ -7,9 +7,8 @@ package logica.modelos;
  * @author Antonia-FSR
  */
 public class Estudiante  implements java.io.Serializable {
-    private static int contadorId= 1;
-    /** Identificador unico del estudiante (por ejemplo, RUT o matrícula). */
-    private String id;
+    /** Identificador unico del estudiante (RUT). */
+    private String rut;
 
     /** Nombre completo del estudiante. */
     private String nombre;
@@ -28,8 +27,8 @@ public class Estudiante  implements java.io.Serializable {
      * @param correo   El correo electrónico de contacto.
      * @param telefono El número de teléfono de contacto.
      */
-    public Estudiante(String nombre, String correo, String telefono) {
-        this.id = "EST-" + (contadorId++);
+    public Estudiante(String rut, String nombre, String correo, String telefono) {
+        this.rut= rut;
         this.nombre = nombre;
         this.correo = correo;
         this.telefono = telefono;
@@ -40,8 +39,8 @@ public class Estudiante  implements java.io.Serializable {
      *
      * @return El ID actual del estudiante en formato String.
      */
-    public String getId() {
-        return id;
+    public String getRUT() {
+        return rut;
     }
 
     /**
@@ -49,8 +48,8 @@ public class Estudiante  implements java.io.Serializable {
      *
      * @param id El nuevo identificador a asignar.
      */
-    public void setId(String id) {
-        this.id = id;
+    public void setRut(String id) {
+        this.rut = id;
     }
 
     /**
@@ -115,6 +114,6 @@ public class Estudiante  implements java.io.Serializable {
      */
     @Override
     public String toString() {
-        return "Estudiante [" + id + "] - Nombre: " + nombre + " | Correo: " + correo;
+        return "Nombre: " + nombre + " | Correo: " + correo;
     }
 }

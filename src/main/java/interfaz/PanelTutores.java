@@ -192,7 +192,7 @@ public class PanelTutores extends JPanel implements InterfazObserver {
 
         if (form.isGuardado()) {
 
-            Tutor nuevoTutor = new Tutor(form.getNombre(), form.getCorreo(), form.getTarifa());
+            Tutor nuevoTutor = new Tutor(form.getRUT(), form.getNombre(), form.getCorreo(), form.getTarifa());
 
             nuevoTutor.agregarMateria(form.getMateria(), 5);
             nuevoTutor.agregarDisponibilidad(form.getHorario());
@@ -209,24 +209,18 @@ public class PanelTutores extends JPanel implements InterfazObserver {
         if (tutor == null) return;
 
         lblNombre.setText(tutor.getNombre());
+        String info= "RUT: " + tutor.getRUT() + "\n\n" +
+                "Correo: " + tutor.getCorreo() + "\n\n" +
+                "Tarifa por hora: $" + tutor.getTarifaHora() + "\n\n" +
+                "Materias:\n";
 
-        StringBuilder info = new StringBuilder();
-
-        info.append("Correo: ").append(tutor.getCorreo()).append("\n\n");
-        info.append("Tarifa por hora: $").append(tutor.getTarifaHora()).append("\n\n");
-
-        info.append("Materias:\n");
         for (String materia : tutor.getMaterias().keySet()) {
-            info.append(" - ")
-                    .append(materia)
-                    .append(" (máx ")
-                    .append(tutor.getMaterias().get(materia))
-                    .append(")\n");
+            info += " - " + materia + " (máx " + tutor.getMaterias().get(materia) + ")\n";
         }
 
-        info.append("\nDisponibilidad:\n");
+        info += "\nDisponibilidad:\n";
         for (String h : tutor.getHorariosDisponibles()) {
-            info.append(" - ").append(h).append("\n");
+            info += " - " + h + "\n";
         }
 
         txtInformacion.setText(info.toString());
