@@ -5,12 +5,22 @@ import logica.Controlador;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Ventana principal de la aplicación que actúa como el contenedor del sistema.
+ * Esta clase hereda de {@link JFrame} y es responsable de inicializar la lógica central mediante la instanciación del {@link Controlador}.
+ * Gestiona el evento de cierre de la aplicación para garantizar la persistencia segura de los datos.
+ */
 public class VentanaPrincipal extends JFrame{
     private Controlador controlador;
     private PanelMenu panelMenu;
     private JPanel panelContenido;
     private PanelReservas panelReservas;
 
+    /**
+     * Construye e inicializa la ventana principal de la interfaz.
+     * Configura las dimensiones mínimas, el título y el comportamiento de cierre, cambiando la acción de cerrar la ventana para invocar el guardado de datos antes de terminar la ejecución.
+     * Mapea cada botón del menú lateral a su vista correspondiente.
+     */
     public VentanaPrincipal(){
         controlador = new Controlador();
 

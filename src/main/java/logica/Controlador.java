@@ -235,11 +235,21 @@ public class Controlador extends Observable{
     }
 
     //GETTERS
+
+    /**
+     * Obtiene la lista completa de reservas registradas en el sistema.
+     * Antes de retornar la lista, invoca {@link #EstadoAutomatico()} para asegurar que las reservas vencidas se muestren como finalizadas.
+     * @return Una lista ({@link java.util.List}) con todas las reservas.
+     */
     public java.util.List<Reserva> getReservas() {
         EstadoAutomatico();
         return reservas;
     }
 
+    /**
+     * Calcula y retorna el total de reservas que se encuentran en estado Pendiente.
+     * @return El número entero que representa la cantidad de reservas sin confirmar o cancelar.
+     */
     public int getCantidadReservasPendientes() {
 
         int cantidad = 0;
@@ -259,13 +269,28 @@ public class Controlador extends Observable{
         return cantidad;
     }
 
+    /**
+     * Obtiene la colección completa de estudiantes registrados.
+     *
+     * @return Una lista ({@link java.util.List}) con los objetos {@link Estudiante}.
+     */
     public List<Estudiante> getEstudiantes() {
         return estudiantes;
     }
 
+    /**
+     * Obtiene la colección completa de tutores registrados.
+     *
+     * @return Una lista ({@link java.util.List}) con los objetos {@link Tutor}.
+     */
     public List<Tutor> getTutores() {
         return tutores;
     }
 
+    /**
+     * Obtiene la instancia que gestiona los catálogos globales (materias y horarios).
+     *
+     * @return El objeto {@link Catalogos} del sistema.
+     */
     public Catalogos getCatalogo() {return catalogo;}
 }

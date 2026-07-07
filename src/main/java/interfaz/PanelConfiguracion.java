@@ -6,6 +6,11 @@ import logica.observer.InterfazObserver;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Panel destinado a la configuración y gestión de los catálogos (materias y horarios).
+ *
+ * Esta clase implementa el patrón de diseño Observer a través de {@link InterfazObserver}, lo que le permite mantenerse sincronizada cuando ocurren cambios en el {@link Controlador}.
+ */
 public class PanelConfiguracion extends JPanel implements InterfazObserver {
     private Controlador controlador;
     private DefaultListModel<String> modeloMaterias;
@@ -13,6 +18,12 @@ public class PanelConfiguracion extends JPanel implements InterfazObserver {
     private JList<String> listaMaterias;
     private JList<String> listaHorarios;
 
+    /**
+     * Construye el panel de configuración.
+     * Establece un diseño dividiendo la pantalla en dos secciones principales (materias y horarios) y registra este panel como observador del controlador.
+     *
+     * @param controlador El gestor principal de la lógica.
+     */
     public PanelConfiguracion(Controlador controlador) {
         this.controlador = controlador;
         this.controlador.agregarObservador(this);
@@ -109,6 +120,10 @@ public class PanelConfiguracion extends JPanel implements InterfazObserver {
         }
     }
 
+    /**
+     * Override del método en {@link InterfazObserver}.
+     * Se invoca automáticamente cuando el {@link Controlador} avisa de un cambio en el estado del sistema, actualizando visualmente.
+     */
     @Override
     public void actualizar() {
         cargarDatos();

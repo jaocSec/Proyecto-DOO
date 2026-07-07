@@ -112,23 +112,82 @@ public class Tutor implements java.io.Serializable {
         return cantidadEstudiantes <= cupoMaximo;
     }
 
+    /**
+     * Obtiene el nombre del tutor.
+     *
+     * @return Una cadena con el nombre completo.
+     */
     public String getNombre() { return nombre; }
+
+    /**
+     * Modifica el nombre del tutor.
+     *
+     * @param nombre El nuevo nombre a asignar.
+     */
     public void setNombre(String nombre) { this.nombre = nombre; }
 
+    /**
+     * Obtiene el correo del tutor.
+     *
+     * @return Una cadena con el correo.
+     */
     public String getCorreo() { return correo; }
+
+    /**
+     * Modifica el correo electrónico del tutor.
+     *
+     * @param correo El nuevo correo a asignar.
+     */
     public void setCorreo(String correo) { this.correo = correo; }
 
+    /**
+     * Obtiene la tarifa que cobra el tutor.
+     *
+     * @return El valor numérico de la tarifa.
+     */
     public double getTarifaHora() { return tarifaHora; }
+
+    /**
+     * Modifica la tarifa por hora del tutor.
+     *
+     * @param tarifaHora La nueva tarifa a establecer.
+     */
     public void setTarifaHora(double tarifaHora) { this.tarifaHora = tarifaHora; }
 
+    /**
+     * Obtiene el diccionario de materias impartidas por el tutor.
+     *
+     * @return Un mapa donde la clave es la materia y el valor es el cupo máximo.
+     */
     public Map<String, Integer> getMaterias() { return materias; }
+
+    /**
+     * Obtiene los bloques horarios en los que el tutor está disponible.
+     *
+     * @return Un conjunto (Set) con los horarios.
+     */
     public Set<String> getHorariosDisponibles() { return horariosDisponibles; }
 
+    /**
+     * Obtiene el RUT del tutor.
+     *
+     * @return Una cadena con el RUT.
+     */
     public String getRUT() {
         return rut;
     }
+
+    /**
+     * Modifica el RUT del tutor.
+     *
+     * @param rut El nuevo identificador a asignar.
+     */
     public void setRut(String rut) {this.rut = rut;}
 
+    /**
+     * Retorna una representación en texto del tutor.
+     * @return Una cadena combinando el nombre y la tarifa del tutor.
+     */
     @Override
     public String toString() {
         return "Nombre: " + nombre + " | Tarifa: $" + tarifaHora + "/hr";

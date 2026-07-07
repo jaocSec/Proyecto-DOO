@@ -9,6 +9,11 @@ import java.awt.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * Panel de la interfaz dedicado a la gestión de los estudiantes.
+ * Permite visualizar una lista actualizada de los alumnos registrados, ver sus detalles y ejecutar acciones de creación, edición y eliminación.
+ * Implementa el patrón Observer a través de {@link InterfazObserver} para reaccionar automáticamente a los cambios a los datos gestionados por el {@link Controlador}.
+ */
 public class PanelEstudiantes extends JPanel implements InterfazObserver {
     private Controlador controlador;
     private DefaultListModel<String> modeloLista;
@@ -27,6 +32,11 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
         }
     }
 
+    /**
+     * Construye e inicializa el panel de gestión de estudiantes.
+     * Configura la vista dividida con una lista a la izquierda y un panel de detalles a la derecha. Registra este panel como observador del controlador para mantener sincronizados los datos.
+     * @param controlador El gestor principal de la lógica.
+     */
     public PanelEstudiantes(Controlador controlador) {
         modeloLista = new DefaultListModel<>();
         listaEstudiantes = new JList<>(modeloLista);
@@ -161,6 +171,7 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
             est.setNombre(form.getNombre());
             est.setCorreo(form.getCorreo());
             est.setTelefono(form.getTelefono());
+            est.setRut(form.getRUT());
 
             controlador.refrescarUI();
             JOptionPane.showMessageDialog(this, "Estudiante actualizado correctamente");
@@ -192,6 +203,11 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
                         "Teléfono: " + estudiante.getTelefono()
         );
     }
+
+    /**
+     * Override del método en {@link InterfazObserver}.
+     * Se invoca automáticamente cuando el {@link Controlador} avisa de un cambio en el estado del sistema, actualizando visualmente.
+     */
     @Override
     public void actualizar() {
         cargarEstudiantes();

@@ -10,6 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Diálogo encargado de la creación y registro de nuevas reservas en el sistema.
+ * Se hace a partir de un formulario donde se ingresa el estudiante, tutor, materia y horario.
+ * Filtra automáticamente los tutores compatibles mediante el uso de {@link Controlador}
+ */
 public class DetalleReservas extends JDialog {
     private Controlador controlador;
     private JComboBox<String> cbEstudiante;
@@ -22,6 +27,15 @@ public class DetalleReservas extends JDialog {
     private JSpinner spinnerFecha;
     private JButton btnGuardar;
 
+
+    /**
+     * Construye e inicializa el diálogo para registrar una nueva reserva.
+     * Carga los catálogos de materias y horarios.
+     * Establece los eventos (listeners) necesarios para la actualización dinámica de la interfaz.
+     *
+     * @param parent      La ventana principal que actuará como padre de este diálogo.
+     * @param controlador El gestor principal de la lógica.
+     */
     public DetalleReservas(Window parent, Controlador controlador) {
         super(parent, "Crear Nueva Reserva", Dialog.ModalityType.APPLICATION_MODAL);
         this.controlador = controlador;

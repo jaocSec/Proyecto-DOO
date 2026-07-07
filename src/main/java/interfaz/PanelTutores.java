@@ -9,6 +9,12 @@ import java.awt.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * Panel de la interfaz dedicado a la gestión de los tutores.
+ * Permite visualizar una lista actualizada de los tutores registrados, ver sus detalles y ejecutar acciones de creación, edición, eliminación y gestión específica de sus horarios y materias.
+ *
+ * Implementa el patrón Observer a través de {@link InterfazObserver} para reaccionar a los cambios en los datos gestionados por el {@link Controlador}.
+ */
 public class PanelTutores extends JPanel implements InterfazObserver {
     private Controlador controlador;
     private DefaultListModel<String> modeloLista;
@@ -28,6 +34,11 @@ public class PanelTutores extends JPanel implements InterfazObserver {
         }
     }
 
+    /**
+     * Construye el panel de gestión de tutores.
+     * Configura la vista dividida con una lista a la izquierda y un panel de detalles a la derecha, el cual incluye botones para la gestión de materias y horarios. Registra este panel como observador del controlador.
+     * @param controlador El gestor principal de la lógica.
+     */
     public PanelTutores(Controlador controlador) {
 
         this.controlador = controlador;
@@ -183,6 +194,7 @@ public class PanelTutores extends JPanel implements InterfazObserver {
             tutor.setNombre(form.getNombre());
             tutor.setCorreo(form.getCorreo());
             tutor.setTarifaHora(form.getTarifa());
+            tutor.setRut(form.getRUT());
 
             controlador.refrescarUI();
             JOptionPane.showMessageDialog(this, "Tutor actualizado correctamente");
@@ -389,6 +401,11 @@ public class PanelTutores extends JPanel implements InterfazObserver {
 
         dialogo.setVisible(true);
     }
+
+    /**
+     * Override del método en {@link InterfazObserver}.
+     * Se invoca automáticamente cuando el {@link Controlador} avisa de un cambio en el estado del sistema, actualizando visualmente.
+     */
     @Override
     public void actualizar() {
         cargarTutores();

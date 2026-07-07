@@ -12,6 +12,11 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 
+/**
+ * Panel principal de la interfaz gráfica dedicado a la visualización, filtrado y gestión de las reservas.
+ * Este panel despliega los datos en una tabla y actúa conecta hacia el patrón de diseño State, permitiendo confirmar o cancelar reservas.
+ * Implementa el patrón Observer mediante {@link InterfazObserver} para mostrar en tiempo real cualquier cambio en los catálogos o estados del sistema.
+ */
 public class PanelReservas extends JPanel implements InterfazObserver {
     private List<Reserva> reservasMostradas = new java.util.ArrayList<>();
     private Controlador controlador;
@@ -25,6 +30,12 @@ public class PanelReservas extends JPanel implements InterfazObserver {
     private JButton btnConfirmarReserva;
     private JButton btnCancelarReserva;
 
+    /**
+     * Construye el panel de gestión de reservas.
+     * Configura los filtros de búsqueda, la tabla de visualización (JTable) y los botones de acción para cambios de estado.
+     * Registra el panel como observador del {@link Controlador}.
+     * @param controlador El gestor principal de la lógica.
+     */
     public PanelReservas(Controlador controlador) {
 
         this.controlador= controlador;
@@ -198,6 +209,10 @@ public class PanelReservas extends JPanel implements InterfazObserver {
         formulario.setVisible(true);
     }
 
+    /**
+     * Override del método definido en {@link InterfazObserver}.
+     * Se invoca cuando el {@link Controlador} notifica un cambio, actualizando los listados de filtros y recargando la tabla.
+     */
     @Override
     public void actualizar() {
         actualizarFiltros();

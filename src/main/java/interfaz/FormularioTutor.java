@@ -5,7 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 
 import logica.modelos.Tutor;
+import logica.*;
 
+/**
+ * Cuadro de diálogo que contiene un formulario para gestionar tutores.
+ * Permite tanto el registro de nuevos tutores y la edición de los datos de tutores ya existentes.
+ */
 public class FormularioTutor extends JDialog {
     private Controlador controlador;
     private JTextField txtNombre;
@@ -17,6 +22,13 @@ public class FormularioTutor extends JDialog {
     private JTextField txtCupo;
     private boolean guardado = false;
 
+    /**
+     * Construye el formulario para la creación de un nuevo tutor.
+     * Carga las opciones de materias y horarios disponibles en los catálogos {@link Catalogos}
+     *
+     * @param parent La ventana principal que será padre de este diálogo.
+     * @param controlador El gestor de la lógica para obtener los catálogos.
+     */
     public FormularioTutor(Window parent, Controlador controlador) {
         super(parent, "Agregar Nuevo Tutor", Dialog.ModalityType.APPLICATION_MODAL);
         this.controlador= controlador;
@@ -87,7 +99,15 @@ public class FormularioTutor extends JDialog {
         add(panelBotones, BorderLayout.SOUTH);
     }
 
-    //Constructor edicion
+    /**
+     * Construye el formulario para la edición de un tutor existente.
+     * Reutiliza la estructura visual del constructor principal y rellena los campos de texto con la información ya existente.
+     * Deshabilita los campos de materia y horario, ya que estos se gestionan en ventanas especificas.
+     *
+     * @param parent     La ventana principal que será padre de este diálogo.
+     * @param controlador El gestor principal de la lógica.
+     * @param tutor El objeto tutor el cual se editará y se usarán sus datos para rellenar el diálogo.
+     */
     public FormularioTutor(Window parent, Controlador controlador, Tutor tutor) {
         this(parent, controlador);
         setTitle("Editar Tutor");
@@ -96,18 +116,52 @@ public class FormularioTutor extends JDialog {
         txtCorreo.setText(tutor.getCorreo());
         txtTarifa.setText(String.valueOf(tutor.getTarifaHora()));
 
-        //Se deshabilitan los dropdowns porque en edición se usarán los botones de gestión
         cbMateria.setEnabled(false);
         cbHorario.setEnabled(false);
         txtCupo.setEnabled(false);
         txtCupo.setText("");
     }
 
-    public boolean isGuardado() { return guardado; }
-    public String getNombre() { return txtNombre.getText().trim(); }
-    public String getCorreo() { return txtCorreo.getText().trim(); }
-    public double getTarifa() { return Double.parseDouble(txtTarifa.getText().trim()); }
-    public String getMateria() { return (String) cbMateria.getSelectedItem(); }
+    /**
+     * Verifica si el usuario completó el formulario y confirmó el guardado.
+     *
+     * @return true si los datos pasaron la validación y se guardaron, false si se canceló.
+     */
+    public boolean isGuardado() {return guardado;}
+
+    /**
+     * Obtiene el nombre ingresado en el formulario.
+     *
+     * @return Una cadena de texto con el nombre del tutor.
+     */
+    public String getNombre() {return txtNombre.getText().trim();}
+
+    /**
+     * Obtiene el correo ingresado en el formulario.
+     *
+     * @return Una cadena de texto con el correo del tutor.
+     */
+    public String getCorreo() {return txtCorreo.getText().trim();}
+
+    /**
+     * Obtiene la tarifa ingresada en el formulario.
+     *
+     * @return El valor numérico de la tarifa por hora.
+     */
+    public double getTarifa() {return Double.parseDouble(txtTarifa.getText().trim());}
+
+    /**
+     * Obtiene la materia seleccionada al registrar el tutor.
+     *
+     * @return Una cadena de texto con el nombre de la materia seleccionada.
+     */
+    public String getMateria() {return (String) cbMateria.getSelectedItem();}
+
+    /**
+     * Obtiene el cupo máximo asignado para la primera materia del tutor.
+     *
+     * @return El número entero que representa el cupo para la materia.
+     */
     public String getHorario() { return (String) cbHorario.getSelectedItem(); }
     public int getCupo() {
         try {
@@ -117,5 +171,10 @@ public class FormularioTutor extends JDialog {
         }
     }
 
+    /**
+     * Obtiene el RUT ingresado en el formulario.
+     *
+     * @return Una cadena de texto con el RUT del tutor.
+     */
     public String getRUT() {return txtRut.getText().trim();}
 }
