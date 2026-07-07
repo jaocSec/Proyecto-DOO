@@ -9,9 +9,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 
 public class PanelReservas extends JPanel implements InterfazObserver {
+    private List<Reserva> reservasMostradas = new java.util.ArrayList<>();
     private Controlador controlador;
     private JComboBox<String> comboEstudiantes;
     private JComboBox<String> comboTutores;
@@ -142,6 +144,7 @@ public class PanelReservas extends JPanel implements InterfazObserver {
 
     private void cargarReservas() {
         modeloTabla.setRowCount(0);
+        reservasMostradas.clear();
 
         String filtroEstudiante = (String) comboEstudiantes.getSelectedItem();
         String filtroTutor = (String) comboTutores.getSelectedItem();
@@ -154,6 +157,7 @@ public class PanelReservas extends JPanel implements InterfazObserver {
             boolean coincideTut = filtroTutor == null || filtroTutor.equals("Todos") || nombreTutor.equals(filtroTutor);
 
             if (coincideEst && coincideTut) {
+                reservasMostradas.add(reserva);
                 modeloTabla.addRow(new Object[]{
                         reserva.getFecha(),
                         reserva.getHorario(),
@@ -174,14 +178,11 @@ public class PanelReservas extends JPanel implements InterfazObserver {
         }
 
         int filaModelo = tablaReservas.convertRowIndexToModel(filaVista);
-        Reserva reserva = controlador.getReservas().get(filaModelo);
+        Reserva reserva = reservasMostradas.get(filaModelo);
 
         switch (accion) {
             case "CONFIRMAR":
                 reserva.confirmar();
-                break;
-            case "FINALIZAR":
-                reserva.finalizar();
                 break;
             case "CANCELAR":
                 reserva.cancelar();

@@ -243,10 +243,10 @@ public class Controlador extends Observable{
 
         for (Reserva reserva : reservas) {
 
-            if (!reserva.getEstadoActual()
+            if (reserva.getEstadoActual()
                     .getClass()
                     .getSimpleName()
-                    .equals("EstadoCancelada")) {
+                    .equals("EstadoPendiente")) {
 
                 cantidad++;
             }
