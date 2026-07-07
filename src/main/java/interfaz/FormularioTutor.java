@@ -4,6 +4,8 @@ import logica.Controlador;
 import javax.swing.*;
 import java.awt.*;
 
+import logica.modelos.Tutor;
+
 public class FormularioTutor extends JDialog {
     private Controlador controlador;
     private JTextField txtNombre;
@@ -12,6 +14,7 @@ public class FormularioTutor extends JDialog {
     private JTextField txtRut;
     private JComboBox<String> cbMateria;
     private JComboBox<String> cbHorario;
+    private JTextField txtCupo;
     private boolean guardado = false;
 
     public FormularioTutor(Window parent, Controlador controlador) {
@@ -23,7 +26,7 @@ public class FormularioTutor extends JDialog {
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
 
-        JPanel panelDatos = new JPanel(new GridLayout(6, 2, 10, 15));
+        JPanel panelDatos = new JPanel(new GridLayout(0, 2, 10, 15));
         panelDatos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         panelDatos.add(new JLabel("Nombre Completo:"));
@@ -48,9 +51,13 @@ public class FormularioTutor extends JDialog {
         panelDatos.add(cbMateria);
 
         //Desplegable horarios
-        panelDatos.add(new JLabel("Horario Inicial:"));
+        panelDatos.add(new JLabel("Horario: "));
         cbHorario = new JComboBox<>(controlador.getCatalogo().getHorarios().toArray(new String[0]));
         panelDatos.add(cbHorario);
+
+        panelDatos.add(new JLabel("Cupo Máximo:"));
+        txtCupo = new JTextField("5");
+        panelDatos.add(txtCupo);
 
         add(panelDatos, BorderLayout.CENTER);
 
@@ -81,7 +88,7 @@ public class FormularioTutor extends JDialog {
     }
 
     //Constructor edicion
-    public FormularioTutor(Window parent, Controlador controlador, logica.modelos.Tutor tutor) {
+    public FormularioTutor(Window parent, Controlador controlador, Tutor tutor) {
         this(parent, controlador);
         if (tutor != null) {
             setTitle("Editar Tutor");
@@ -101,5 +108,13 @@ public class FormularioTutor extends JDialog {
     public double getTarifa() { return Double.parseDouble(txtTarifa.getText().trim()); }
     public String getMateria() { return (String) cbMateria.getSelectedItem(); }
     public String getHorario() { return (String) cbHorario.getSelectedItem(); }
+    public int getCupo() {
+        try {
+            return Integer.parseInt(txtCupo.getText().trim());
+        } catch (NumberFormatException e) {
+            return 5;
+        }
+    }
+
     public String getRUT() {return txtRut.getText().trim();}
 }

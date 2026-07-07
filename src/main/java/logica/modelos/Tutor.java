@@ -38,6 +38,8 @@ public class Tutor implements java.io.Serializable {
      */
     private Set<String> horariosDisponibles;
 
+    private int cupoMaximo;
+
     /**
      * Constructor principal de la clase Tutor.
      * Inicializa las colecciones vacías listas para ser pobladas.
@@ -46,13 +48,15 @@ public class Tutor implements java.io.Serializable {
      * @param correo     El correo electrónico de contacto.
      * @param tarifaHora La tarifa base por hora de clase.
      */
-    public Tutor(String rut, String nombre, String correo, double tarifaHora) {
+    public Tutor(String rut, String nombre, String correo, double tarifaHora, int cupoMaximo) {
         this.rut = rut;
         this.nombre = nombre;
         this.correo = correo;
         this.tarifaHora = tarifaHora;
         this.materias = new HashMap<>();
         this.horariosDisponibles = new HashSet<>();
+        this.cupoMaximo = cupoMaximo;
+
     }
 
     /**
@@ -127,6 +131,9 @@ public class Tutor implements java.io.Serializable {
         return rut;
     }
     public void setRut(String rut) {this.rut = rut;}
+
+    public int getCupoMaximo() {return cupoMaximo;}
+    public void setCupoMaximo(int cupoMaximo) {this.cupoMaximo = cupoMaximo;}
 
     @Override
     public String toString() {
