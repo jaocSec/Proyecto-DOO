@@ -239,30 +239,42 @@ public class PanelTutores extends JPanel implements InterfazObserver {
         if (tutor == null) return;
 
         Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
-        JDialog dialogo = new JDialog(ventanaPadre, "Asignar Materia a " + tutor.getNombre(), Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setSize(350, 200);
+        JDialog dialogo = new JDialog(ventanaPadre, "Gestionar Materias - " + tutor.getNombre(), Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(400, 450);
         dialogo.setLocationRelativeTo(this);
-        dialogo.setLayout(new BorderLayout());
+        dialogo.setLayout(new BorderLayout(10, 10));
 
-        JPanel panelFormulario = new JPanel(new GridLayout(2, 2, 10, 15));
-        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JPanel panelAgregar = new JPanel(new GridLayout(3, 2, 5, 5));
+        panelAgregar.setBorder(BorderFactory.createTitledBorder("Añadir Nueva Materia"));
 
-        panelFormulario.add(new JLabel("Materia del Catálogo:"));
+        panelAgregar.add(new JLabel("Materia:"));
         JComboBox<String> cbMaterias = new JComboBox<>(controlador.getCatalogo().getMaterias().toArray(new String[0]));
-        panelFormulario.add(cbMaterias);
+        panelAgregar.add(cbMaterias);
 
-        panelFormulario.add(new JLabel("Cupo máximo (alumnos):"));
+        panelAgregar.add(new JLabel("Cupo máximo:"));
         JTextField txtCupoMateria = new JTextField("5");
-        panelFormulario.add(txtCupoMateria);
+        panelAgregar.add(txtCupoMateria);
 
-        dialogo.add(panelFormulario, BorderLayout.CENTER);
+        JButton btnAgregar = new JButton("Añadir / Actualizar");
+        panelAgregar.add(new JLabel("")); // Espaciador
+        panelAgregar.add(btnAgregar);
 
-        JPanel panelSur = new JPanel();
-        JButton btnGuardarMateria = new JButton("Añadir Materia");
-        panelSur.add(btnGuardarMateria);
-        dialogo.add(panelSur, BorderLayout.SOUTH);
+        JPanel panelEliminar = new JPanel(new BorderLayout(5, 5));
+        panelEliminar.setBorder(BorderFactory.createTitledBorder("Materias Asignadas (Seleccione para quitar)"));
 
-        btnGuardarMateria.addActionListener(e -> {
+        DefaultListModel<String> modeloMateriasActuales = new DefaultListModel<>();
+        for (String m : tutor.getMaterias().keySet()) {
+            modeloMateriasActuales.addElement(m);
+        }
+
+        JList<String> listaMateriasActuales = new JList<>(modeloMateriasActuales);
+        listaMateriasActuales.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        panelEliminar.add(new JScrollPane(listaMateriasActuales), BorderLayout.CENTER);
+
+        JButton btnQuitar = new JButton("Quitar Materia Seleccionada");
+        panelEliminar.add(btnQuitar, BorderLayout.SOUTH);
+
+        btnAgregar.addActionListener(e -> {
             try {
                 int cupo = Integer.parseInt(txtCupoMateria.getText().trim());
                 String materia = (String) cbMaterias.getSelectedItem();
@@ -272,12 +284,34 @@ public class PanelTutores extends JPanel implements InterfazObserver {
                 controlador.refrescarUI();
                 actualizarDetalles(seleccionado);
 
-                JOptionPane.showMessageDialog(dialogo, "Materia añadida correctamente.");
-                dialogo.dispose();
+                // Actualizar la lista inferior de la ventana
+                if (!modeloMateriasActuales.contains(materia)) {
+                    modeloMateriasActuales.addElement(materia);
+                }
+                JOptionPane.showMessageDialog(dialogo, "Materia añadida.");
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(dialogo, "El cupo debe ser un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dialogo, "El cupo debe ser numérico.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+        btnQuitar.addActionListener(e -> {
+            String materiaSelec = listaMateriasActuales.getSelectedValue();
+            if (materiaSelec != null) {
+                tutor.getMaterias().remove(materiaSelec);
+                controlador.guardarDatos();
+                controlador.refrescarUI();
+                actualizarDetalles(seleccionado);
+
+                modeloMateriasActuales.removeElement(materiaSelec);
+            }
+        });
+
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dialogo.dispose());
+
+        dialogo.add(panelAgregar, BorderLayout.NORTH);
+        dialogo.add(panelEliminar, BorderLayout.CENTER);
+        dialogo.add(btnCerrar, BorderLayout.SOUTH);
 
         dialogo.setVisible(true);
     }
@@ -290,37 +324,68 @@ public class PanelTutores extends JPanel implements InterfazObserver {
         if (tutor == null) return;
 
         Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
-        JDialog dialogo = new JDialog(ventanaPadre, "Asignar Horario a " + tutor.getNombre(), Dialog.ModalityType.APPLICATION_MODAL);
-        dialogo.setSize(350, 150);
+        JDialog dialogo = new JDialog(ventanaPadre, "Gestionar Horarios - " + tutor.getNombre(), Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(400, 400);
         dialogo.setLocationRelativeTo(this);
-        dialogo.setLayout(new BorderLayout());
+        dialogo.setLayout(new BorderLayout(10, 10));
 
-        JPanel panelFormulario = new JPanel(new GridLayout(1, 2, 10, 15));
-        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JPanel panelAgregar = new JPanel(new GridLayout(2, 2, 5, 5));
+        panelAgregar.setBorder(BorderFactory.createTitledBorder("Añadir Nuevo Horario"));
 
-        panelFormulario.add(new JLabel("Bloque Horario:"));
+        panelAgregar.add(new JLabel("Bloque Horario:"));
         JComboBox<String> cbHorarios = new JComboBox<>(controlador.getCatalogo().getHorarios().toArray(new String[0]));
-        panelFormulario.add(cbHorarios);
-        dialogo.add(panelFormulario, BorderLayout.CENTER);
+        panelAgregar.add(cbHorarios);
 
-        JPanel panelSur = new JPanel();
-        JButton btnGuardarHorario = new JButton("Añadir Horario");
-        panelSur.add(btnGuardarHorario);
-        dialogo.add(panelSur, BorderLayout.SOUTH);
+        JButton btnAgregar = new JButton("Añadir Horario");
+        panelAgregar.add(new JLabel("")); // Espaciador
+        panelAgregar.add(btnAgregar);
 
-        btnGuardarHorario.addActionListener(e -> {
+        JPanel panelEliminar = new JPanel(new BorderLayout(5, 5));
+        panelEliminar.setBorder(BorderFactory.createTitledBorder("Horarios Asignados (Seleccione para quitar)"));
+
+        DefaultListModel<String> modeloHorariosActuales = new DefaultListModel<>();
+        for (String h : tutor.getHorariosDisponibles()) {
+            modeloHorariosActuales.addElement(h);
+        }
+
+        JList<String> listaHorariosActuales = new JList<>(modeloHorariosActuales);
+        listaHorariosActuales.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        panelEliminar.add(new JScrollPane(listaHorariosActuales), BorderLayout.CENTER);
+
+        JButton btnQuitar = new JButton("Quitar Horario Seleccionado");
+        panelEliminar.add(btnQuitar, BorderLayout.SOUTH);
+
+        btnAgregar.addActionListener(e -> {
             String horario = (String) cbHorarios.getSelectedItem();
 
-            tutor.agregarDisponibilidad(horario);
+            if (!tutor.getHorariosDisponibles().contains(horario)) {
+                tutor.agregarDisponibilidad(horario);
+                controlador.guardarDatos();
+                controlador.refrescarUI();
+                actualizarDetalles(seleccionado);
 
-            controlador.guardarDatos();
-            controlador.refrescarUI();
-            actualizarDetalles(seleccionado);
-
-            JOptionPane.showMessageDialog(dialogo, "Horario añadido correctamente.");
-            dialogo.dispose();
-
+                modeloHorariosActuales.addElement(horario);
+            }
         });
+
+        btnQuitar.addActionListener(e -> {
+            String horarioSelec = listaHorariosActuales.getSelectedValue();
+            if (horarioSelec != null) {
+                tutor.removerDisponibilidad(horarioSelec);
+                controlador.guardarDatos();
+                controlador.refrescarUI();
+                actualizarDetalles(seleccionado);
+
+                modeloHorariosActuales.removeElement(horarioSelec);
+            }
+        });
+
+        JButton btnCerrar = new JButton("Cerrar");
+        btnCerrar.addActionListener(e -> dialogo.dispose());
+
+        dialogo.add(panelAgregar, BorderLayout.NORTH);
+        dialogo.add(panelEliminar, BorderLayout.CENTER);
+        dialogo.add(btnCerrar, BorderLayout.SOUTH);
 
         dialogo.setVisible(true);
     }
