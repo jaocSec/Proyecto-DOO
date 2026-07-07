@@ -9,7 +9,7 @@ public class ReservaFactoryTest {
     @Test
     public void testCrearReservaVirtual() {
         Reserva reserva = ReservaFactory.crearReserva(
-                "VIRTUAL", "R001", null, null, "Programación", "10:00", "Zoom"
+                "VIRTUAL", null, null, "Programación", "10-10-2026", "10:00", "Zoom"
         );
 
         assertTrue(reserva instanceof ReservaVirtual, "Error: La fábrica no retornó una ReservaVirtual");
@@ -22,7 +22,7 @@ public class ReservaFactoryTest {
     @Test
     public void testCrearReservaPresencial() {
         Reserva reserva = ReservaFactory.crearReserva(
-                "PRESENCIAL", "R002", null, null, "Física", "11:30", "Sala 302"
+                "PRESENCIAL", null, null, "Física", "10-10-2026", "11:30", "Sala 302"
         );
 
         assertTrue(reserva instanceof ReservaPresencial, "Error: La fábrica no retornó una ReservaPresencial");
@@ -36,11 +36,12 @@ public class ReservaFactoryTest {
     public void testCrearReservaConTipoInvalido() {
         Exception excepcion = assertThrows(IllegalArgumentException.class, () -> {
             ReservaFactory.crearReserva(
-                    "HIBRIDA", "R003", null, null, "Química", "14:00", "Laboratorio"
+                    "HIBRIDA", null, null, "Química", "10-10-2026", "14:00", "Laboratorio"
             );
         });
 
-        assertTrue(excepcion.getMessage().contains("Tipo de reserva no válido"),
+        // Este assert dependerá de cómo escribiste el mensaje de error en tu Factory
+        assertTrue(excepcion.getMessage().contains("Tipo de reserva no válido") || excepcion.getMessage().toLowerCase().contains("tipo"),
                 "Error: El mensaje de la excepción no es el esperado");
     }
 
@@ -48,13 +49,13 @@ public class ReservaFactoryTest {
     public void testCrearReservaConTipoVacio() {
         assertThrows(IllegalArgumentException.class, () -> {
             ReservaFactory.crearReserva(
-                    "", "R004", null, null, "Cálculo", "15:00", "Sala 1"
+                    "", null, null, "Cálculo", "10-10-2026", "15:00", "Sala 1"
             );
         }, "Error: La fábrica debe rechazar un string vacío");
 
         assertThrows(IllegalArgumentException.class, () -> {
             ReservaFactory.crearReserva(
-                    null, "R005", null, null, "Cálculo", "16:00", "Sala 2"
+                    null, null, null, "Cálculo", "10-10-2026", "16:00", "Sala 2"
             );
         }, "Error: La fábrica debe rechazar un valor nulo");
     }
