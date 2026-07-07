@@ -99,6 +99,9 @@ public class PanelTutores extends JPanel implements InterfazObserver {
         panelAccionesTutor.add(btnGestionarMaterias);
         panelAccionesTutor.add(btnGestionarHorarios);
 
+        btnGestionarMaterias.addActionListener(e -> abrirGestionMaterias());
+        btnGestionarHorarios.addActionListener(e -> abrirGestionHorarios());
+
         panelDerecho.add(panelAccionesTutor, BorderLayout.SOUTH);
 
 
@@ -192,9 +195,9 @@ public class PanelTutores extends JPanel implements InterfazObserver {
 
         if (form.isGuardado()) {
 
-            Tutor nuevoTutor = new Tutor(form.getRUT(), form.getNombre(), form.getCorreo(), form.getTarifa(), form.getCupo());
+            Tutor nuevoTutor = new Tutor(form.getRUT(), form.getNombre(), form.getCorreo(), form.getTarifa());
 
-            nuevoTutor.agregarMateria(form.getMateria(), 5);
+            nuevoTutor.agregarMateria(form.getMateria(), form.getCupo());
             nuevoTutor.agregarDisponibilidad(form.getHorario());
 
             controlador.registrarTutor(nuevoTutor);
@@ -209,17 +212,117 @@ public class PanelTutores extends JPanel implements InterfazObserver {
 
         lblNombre.setText(tutor.getNombre());
 
-        String info = "RUT: " + tutor.getRUT() + "\n\n" +
+        String info =
+                "RUT: " + tutor.getRUT() + "\n\n" +
                 "Correo: " + tutor.getCorreo() + "\n\n" +
                 "Tarifa por hora: $" + tutor.getTarifaHora() + "\n\n" +
-                "Cupo máximo: " + tutor.getCupoMaximo() + "\n\n" +
-                "Materia: " + tutor.getMaterias() + "\n\n" +
-                "Disponibilidad:\n";
+                "Materias y cupos:\n";
+
+        for (java.util.Map.Entry<String, Integer> entrada : tutor.getMaterias().entrySet()) {
+            info = info + " - " + entrada.getKey() + " (Cupo máx: " + entrada.getValue() + ")\n";
+        }
+
+        info = info + "\nDisponibilidad:\n";
+
         for (String h : tutor.getHorariosDisponibles()) {
             info = info + " - " + h + "\n";
         }
 
         txtInformacion.setText(info);
+    }
+
+    private void abrirGestionMaterias() {
+        String seleccionado = listaTutores.getSelectedValue();
+        if (seleccionado == null) return;
+
+        Tutor tutor = controlador.buscarTutorPorNombre(seleccionado);
+        if (tutor == null) return;
+
+        Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
+        JDialog dialogo = new JDialog(ventanaPadre, "Asignar Materia a " + tutor.getNombre(), Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(350, 200);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setLayout(new BorderLayout());
+
+        JPanel panelFormulario = new JPanel(new GridLayout(2, 2, 10, 15));
+        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        panelFormulario.add(new JLabel("Materia del Catálogo:"));
+        JComboBox<String> cbMaterias = new JComboBox<>(controlador.getCatalogo().getMaterias().toArray(new String[0]));
+        panelFormulario.add(cbMaterias);
+
+        panelFormulario.add(new JLabel("Cupo máximo (alumnos):"));
+        JTextField txtCupoMateria = new JTextField("5");
+        panelFormulario.add(txtCupoMateria);
+
+        dialogo.add(panelFormulario, BorderLayout.CENTER);
+
+        JPanel panelSur = new JPanel();
+        JButton btnGuardarMateria = new JButton("Añadir Materia");
+        panelSur.add(btnGuardarMateria);
+        dialogo.add(panelSur, BorderLayout.SOUTH);
+
+        btnGuardarMateria.addActionListener(e -> {
+            try {
+                int cupo = Integer.parseInt(txtCupoMateria.getText().trim());
+                String materia = (String) cbMaterias.getSelectedItem();
+
+                tutor.agregarMateria(materia, cupo);
+                controlador.guardarDatos();
+                controlador.refrescarUI();
+                actualizarDetalles(seleccionado);
+
+                JOptionPane.showMessageDialog(dialogo, "Materia añadida correctamente.");
+                dialogo.dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialogo, "El cupo debe ser un número entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        dialogo.setVisible(true);
+    }
+
+    private void abrirGestionHorarios() {
+        String seleccionado = listaTutores.getSelectedValue();
+        if (seleccionado == null) return;
+
+        Tutor tutor = controlador.buscarTutorPorNombre(seleccionado);
+        if (tutor == null) return;
+
+        Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
+        JDialog dialogo = new JDialog(ventanaPadre, "Asignar Horario a " + tutor.getNombre(), Dialog.ModalityType.APPLICATION_MODAL);
+        dialogo.setSize(350, 150);
+        dialogo.setLocationRelativeTo(this);
+        dialogo.setLayout(new BorderLayout());
+
+        JPanel panelFormulario = new JPanel(new GridLayout(1, 2, 10, 15));
+        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        panelFormulario.add(new JLabel("Bloque Horario:"));
+        JComboBox<String> cbHorarios = new JComboBox<>(controlador.getCatalogo().getHorarios().toArray(new String[0]));
+        panelFormulario.add(cbHorarios);
+        dialogo.add(panelFormulario, BorderLayout.CENTER);
+
+        JPanel panelSur = new JPanel();
+        JButton btnGuardarHorario = new JButton("Añadir Horario");
+        panelSur.add(btnGuardarHorario);
+        dialogo.add(panelSur, BorderLayout.SOUTH);
+
+        btnGuardarHorario.addActionListener(e -> {
+            String horario = (String) cbHorarios.getSelectedItem();
+
+            tutor.agregarDisponibilidad(horario);
+
+            controlador.guardarDatos();
+            controlador.refrescarUI();
+            actualizarDetalles(seleccionado);
+
+            JOptionPane.showMessageDialog(dialogo, "Horario añadido correctamente.");
+            dialogo.dispose();
+
+        });
+
+        dialogo.setVisible(true);
     }
     @Override
     public void actualizar() {

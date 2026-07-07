@@ -55,8 +55,8 @@ public class FormularioTutor extends JDialog {
         cbHorario = new JComboBox<>(controlador.getCatalogo().getHorarios().toArray(new String[0]));
         panelDatos.add(cbHorario);
 
-        panelDatos.add(new JLabel("Cupo Máximo:"));
-        txtCupo = new JTextField("5");
+        panelDatos.add(new JLabel("Cupo:"));
+        txtCupo = new JTextField("0");
         panelDatos.add(txtCupo);
 
         add(panelDatos, BorderLayout.CENTER);
@@ -90,18 +90,17 @@ public class FormularioTutor extends JDialog {
     //Constructor edicion
     public FormularioTutor(Window parent, Controlador controlador, Tutor tutor) {
         this(parent, controlador);
-        if (tutor != null) {
-            setTitle("Editar Tutor");
-            txtNombre.setText(tutor.getNombre());
-            txtRut.setText(tutor.getRUT());
-            txtCorreo.setText(tutor.getCorreo());
-            txtTarifa.setText(String.valueOf(tutor.getTarifaHora()));
-            txtCupo.setText(String.valueOf(tutor.getCupoMaximo()));
+        setTitle("Editar Tutor");
+        txtNombre.setText(tutor.getNombre());
+        txtRut.setText(tutor.getRUT());
+        txtCorreo.setText(tutor.getCorreo());
+        txtTarifa.setText(String.valueOf(tutor.getTarifaHora()));
 
-            //Se deshabilitan los dropdowns porque en edición se usarán los botones de gestión
-            cbMateria.setEnabled(false);
-            cbHorario.setEnabled(false);
-        }
+        //Se deshabilitan los dropdowns porque en edición se usarán los botones de gestión
+        cbMateria.setEnabled(false);
+        cbHorario.setEnabled(false);
+        txtCupo.setEnabled(false);
+        txtCupo.setText("");
     }
 
     public boolean isGuardado() { return guardado; }

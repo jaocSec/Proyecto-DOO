@@ -133,22 +133,25 @@ public class Controlador extends Observable{
      * @param tutor El tutor a evaluar.
      * @return true si tiene disponibilidad, false si alcanzó su cupo máximo.
      */
-    public boolean tieneCupo(Tutor tutor) {
-        if (tutor == null) return false;
+    public boolean tieneCupo(Tutor tutor, String materia) {
+        if (!tutor.getMaterias().containsKey(materia)) return false;
 
-        int reservasActivas = 0;
+        int limiteMateria = tutor.getMaterias().get(materia);
+        int reservasActivasMateria = 0;
 
         for (Reserva r : reservas) {
             if (r.getTutor() != null && r.getTutor().getRUT().equals(tutor.getRUT())) {
-                String nombreEstado = r.getEstadoActual().getClass().getSimpleName();
+                String estado = r.getEstadoActual().getClass().getSimpleName();
 
-                if (!nombreEstado.equals("EstadoCancelada") && !nombreEstado.equals("EstadoFinalizada")) {
-                    reservasActivas++;
+                if (!estado.equals("EstadoCancelada") && !estado.equals("EstadoFinalizada")) {
+                    if (r.getMateria().equals(materia)) {
+                        reservasActivasMateria++;
+                    }
                 }
             }
         }
 
-        return reservasActivas < tutor.getCupoMaximo();
+        return reservasActivasMateria < limiteMateria;
     }
 
     /**

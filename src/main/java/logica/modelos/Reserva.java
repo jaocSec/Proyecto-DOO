@@ -9,7 +9,7 @@ import logica.estados.EstadoReserva;
  * interno utilizando el Patrón de Diseño State.
  * @author Antonia-FSR
  */
-public abstract class Reserva {
+public abstract class Reserva implements java.io.Serializable {
     protected String idReserva;
     protected Estudiante estudiante;
     protected Tutor tutor;
