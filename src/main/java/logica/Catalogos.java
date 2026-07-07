@@ -2,10 +2,19 @@ package logica;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Colección de materias y horarios añadidos al programa. Contiene algunos por defecto.
+ *
+ * @author jaocSec
+ */
 public class Catalogos  implements java.io.Serializable {
     private List<String> materiasDisponibles = new ArrayList<>();
     private List<String> horariosDisponibles = new ArrayList<>();
 
+    /**
+     * Constructor inicializa con las materias y horarios por defecto.
+     */
     public Catalogos() {
         materiasDisponibles.add("Calculo I");
         materiasDisponibles.add("Calculo II");
@@ -36,6 +45,11 @@ public class Catalogos  implements java.io.Serializable {
     public List<String> getHorarios() {return horariosDisponibles;}
     public List<String> getMaterias() {return materiasDisponibles;}
 
+    /**
+     * Permite agregar materias a la lista de la clase.
+     * @param materia a agregar
+     * @return true si se logró agregar y falso si ya existe en la lista.
+     */
     public boolean agregarMateria(String materia) {
         {
             for (String m : materiasDisponibles) {
@@ -48,8 +62,17 @@ public class Catalogos  implements java.io.Serializable {
         }
     }
 
+    /**
+     * Elimina materia de la lista de la clase
+     * @param materia a eliminar.
+     */
     public void removerMateria(String materia) {materiasDisponibles.remove(materia);}
 
+    /**
+     * Permite agregar horarios a la lista de la clase.
+     * @param horario a agregar
+     * @return true si se logró agregar y falso si ya existe en la lista.
+     */
     public boolean agregarHorario(String horario) {
         {
             for (String h : horariosDisponibles) {
@@ -62,6 +85,10 @@ public class Catalogos  implements java.io.Serializable {
         }
     }
 
+    /**
+     * Elimina materia de la lista de la clase
+     * @param horario a eliminar.
+     */
     public void removerHorario(String horario) {horariosDisponibles.remove(horario);}
 
 

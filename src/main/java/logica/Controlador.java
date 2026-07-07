@@ -8,6 +8,12 @@ import logica.observer.Observable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase controladora que centraliza la lógica y la persistencia del sistema.
+ * Actúa como intermediario entre la interfaz y los datos.
+ *
+ * * @author jaocSec
+ */
 public class Controlador extends Observable{
     private List<Estudiante> estudiantes;
     private List<Tutor> tutores;
@@ -15,6 +21,9 @@ public class Controlador extends Observable{
 
     private Catalogos catalogo;
 
+    /**
+     * Constructor del controlador. Inicializa las colecciones de datos y realiza la carga persistente de información previa si existe.
+     */
     public Controlador(){
         super();
 
@@ -25,16 +34,17 @@ public class Controlador extends Observable{
         cargarDatos();
     }
 
-    public void confirmarReserva(Reserva reserva){
-
-        reserva.confirmar();
-        notificarObservadores();
-    }
-
+    /**
+     * Fuerza una actualización de la interfaz gráfica para reflejar cambios.
+     */
     public void refrescarUI() {
         notificarObservadores();
     }
 
+    /**
+     * Registra un nuevo tutor en el sistema.
+     * @param tutor Tutor a registrar.
+     */
     public void registrarTutor(Tutor tutor) {
         if (tutor != null) {
             tutores.add(tutor);
@@ -42,6 +52,10 @@ public class Controlador extends Observable{
         }
     }
 
+    /**
+     * Registra un nuevo estudiante en el sistema.
+     * @param estudiante Estudiante a registrar.
+     */
     public void registrarEstudiante(Estudiante estudiante) {
         if (estudiante != null) {
             estudiantes.add(estudiante);
@@ -49,6 +63,10 @@ public class Controlador extends Observable{
         }
     }
 
+    /**
+     * Elimina un tutor del sistema.
+     * @param tutor Tutor a eliminar.
+     */
     public void eliminarTutor(Tutor tutor) {
         if (tutor != null) {
             tutores.remove(tutor);
@@ -56,6 +74,10 @@ public class Controlador extends Observable{
         }
     }
 
+    /**
+     * Elimina un estudiante del sistema.
+     * @param estudiante Estudiante a eliminar.
+     */
     public void eliminarEstudiante(Estudiante estudiante) {
         if (estudiante != null) {
             estudiantes.remove(estudiante);
@@ -63,6 +85,11 @@ public class Controlador extends Observable{
         }
     }
 
+    /**
+     * Busca un tutor por su nombre.
+     * @param nombre El nombre del tutor.
+     * @return El Tutor encontrado o null si no existe.
+     */
     public Tutor buscarTutorPorNombre(String nombre) {
 
         for (Tutor tutor : tutores) {
@@ -74,6 +101,11 @@ public class Controlador extends Observable{
         return null;
     }
 
+    /**
+     * Busca un estudiante por su nombre.
+     * @param nombre El nombre del estudiante.
+     * @return El Estudiante encontrado o null si no existe.
+     */
     public Estudiante buscarEstudiantePorNombre(String nombre) {
 
         for (Estudiante estudiante : estudiantes) {
@@ -85,12 +117,22 @@ public class Controlador extends Observable{
         return null;
     }
 
+    /**
+     * Registra una nueva reserva en el sistema.
+     * @param nuevaReserva Objeto Reserva a añadir.
+     */
     public void registrarReserva(Reserva nuevaReserva) {
 
         reservas.add(nuevaReserva);
         notificarObservadores();
     }
 
+    /**
+     * Filtra tutores según disponibilidad y materia.
+     * @param materia Materia requerida.
+     * @param horario Horario solicitado.
+     * @return Lista de tutores compatibles.
+     */
     public java.util.List<Tutor> buscarTutoresCompatibles(String materia, String horario) {
         java.util.List<Tutor> compatibles = new java.util.ArrayList<>();
 
@@ -105,6 +147,9 @@ public class Controlador extends Observable{
         return compatibles;
     }
 
+    /**
+     * Evaluación para finalizar reservas automáticamente según la fecha y hora.
+     */
     private void EstadoAutomatico(){
         java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
         java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -130,6 +175,9 @@ public class Controlador extends Observable{
 
     }
 
+    /**
+     * Guarda el estado actual del sistema en un archivo binario (.dat).
+     */
     public void guardarDatos() {
         try (java.io.ObjectOutputStream oos = new java.io.ObjectOutputStream(new java.io.FileOutputStream("datos_sistema.dat"))) {
             oos.writeObject(this.estudiantes);
@@ -143,6 +191,9 @@ public class Controlador extends Observable{
         }
     }
 
+    /**
+     * Carga el estado del sistema desde un archivo binario (.dat).
+     */
     @SuppressWarnings("unchecked")
     public void cargarDatos() {
         try (java.io.ObjectInputStream ois = new java.io.ObjectInputStream(new java.io.FileInputStream("datos_sistema.dat"))) {
