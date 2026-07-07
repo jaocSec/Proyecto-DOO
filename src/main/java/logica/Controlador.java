@@ -85,12 +85,24 @@ public class Controlador extends Observable{
         return null;
     }
 
-    public void registrarReserva(String tipo, String idReserva, Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario, String detalleExtra) {
+    public void registrarReserva(Reserva nuevaReserva) {
 
-        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, idReserva, estudiante, tutor, materia, fecha, horario, detalleExtra);
         reservas.add(nuevaReserva);
-
         notificarObservadores();
+    }
+
+    public java.util.List<Tutor> buscarTutoresCompatibles(String materia, String horario) {
+        java.util.List<Tutor> compatibles = new java.util.ArrayList<>();
+
+        for (Tutor tutor : getTutores()) {
+            boolean enseñaMateria = tutor.getMaterias().containsKey(materia);
+            boolean horarioLibre = tutor.getHorariosDisponibles().contains(horario);
+
+            if (enseñaMateria && horarioLibre) {
+                compatibles.add(tutor);
+            }
+        }
+        return compatibles;
     }
 
     //GETTERS

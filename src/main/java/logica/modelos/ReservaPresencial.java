@@ -7,9 +7,9 @@ public class ReservaPresencial extends Reserva {
 
     private String sala;
 
-    public ReservaPresencial(String idReserva, Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario, String salaUbicacion) {
+    public ReservaPresencial(Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario, String salaUbicacion) {
 
-        super(idReserva, estudiante, tutor, materia, fecha, horario);
+        super(estudiante, tutor, materia, fecha, horario);
         this.sala= salaUbicacion;
     }
 

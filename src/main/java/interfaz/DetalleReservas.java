@@ -1,86 +1,149 @@
 package interfaz;
 
 import logica.Controlador;
+import logica.ReservaFactory;
 import logica.modelos.Estudiante;
 import logica.modelos.Reserva;
 import logica.modelos.Tutor;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class DetalleReservas extends JDialog {
     private Controlador controlador;
-    //AGREGAR RESERVA!!
+    private JComboBox<String> cbEstudiante;
+    private JComboBox<String> cbMateria;
+    private JComboBox<String> cbHorario;
+    private JComboBox<String> cbTutor;
+    private JComboBox<String> cbTipoReserva;
+    private JTextField txtDetalleExtra;
+    private JButton btnGuardar;
+
     public DetalleReservas(Window parent, Controlador controlador) {
-
-        //Ventana
-        super(parent, "Detalles Reserva", Dialog.ModalityType.APPLICATION_MODAL);
-
+        super(parent, "Crear Nueva Reserva", Dialog.ModalityType.APPLICATION_MODAL);
         this.controlador = controlador;
 
-        setSize(400, 350);
+        setSize(450, 400);
         setLocationRelativeTo(parent);
         setLayout(new BorderLayout());
 
-        //Panel Central
-        JPanel panelDatos = new JPanel(new GridLayout(6, 2, 10, 15));
-        JTextField txtId = new JTextField();
+        JPanel panelFormulario = new JPanel(new GridLayout(8, 2, 15, 20));
+        panelFormulario.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JTextField txtMateria = new JTextField();
-
-        JTextField txtHorario = new JTextField();
-        JComboBox<Estudiante> comboEstudiantes =
-                new JComboBox<>();
-        for(Estudiante e : controlador.getEstudiantes()){
-
-            comboEstudiantes.addItem(e);
-
+        //Selección estudiante
+        panelFormulario.add(new JLabel("Estudiante:"));
+        cbEstudiante = new JComboBox<>();
+        for (Estudiante e : controlador.getEstudiantes()) {
+            cbEstudiante.addItem(e.getNombre());
         }
-        JComboBox<Tutor> comboTutores = new JComboBox<>();
+        panelFormulario.add(cbEstudiante);
 
-        for (Tutor t : controlador.getTutores()) {
-            comboTutores.addItem(t);
-        }
-        panelDatos.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        //Selección materia
+        panelFormulario.add(new JLabel("Materia:"));
+        cbMateria = new JComboBox<>(controlador.getCatalogo().getMaterias().toArray(new String[0]));
+        panelFormulario.add(cbMateria);
 
-        panelDatos.add(new JLabel("ID:"));
-        panelDatos.add(txtId);
+        //selección horario
+        panelFormulario.add(new JLabel("Horario:"));
+        cbHorario = new JComboBox<>(controlador.getCatalogo().getHorarios().toArray(new String[0]));
+        panelFormulario.add(cbHorario);
 
-        panelDatos.add(new JLabel("Estudiante:"));
-        panelDatos.add(comboEstudiantes);
+        //Selección tutor
+        panelFormulario.add(new JLabel("Tutor Compatible:"));
+        cbTutor = new JComboBox<>();
+        panelFormulario.add(cbTutor);
 
-        panelDatos.add(new JLabel("Tutor:"));
-        panelDatos.add(comboTutores);
+        //Tipo de Reserva
+        panelFormulario.add(new JLabel("Modalidad:"));
+        cbTipoReserva = new JComboBox<>(new String[]{"VIRTUAL", "PRESENCIAL"});
+        panelFormulario.add(cbTipoReserva);
 
-        panelDatos.add(new JLabel("Materia:"));
-        panelDatos.add(txtMateria);
+        //Plataforma o sala
+        JLabel lblDetalleExtra = new JLabel("Plataforma");
+        txtDetalleExtra = new JTextField();
+        panelFormulario.add(lblDetalleExtra);
+        panelFormulario.add(txtDetalleExtra);
 
-        panelDatos.add(new JLabel("Horario:"));
-        panelDatos.add(txtHorario);
-        add(panelDatos, BorderLayout.CENTER);
-
-        JPanel panelBoton = new JPanel();
-        JButton btnGuardar = new JButton("Guardar");
-        btnGuardar.addActionListener(e -> {
-
-            controlador.registrarReserva(
-                    "PRESENCIAL",
-                    txtId.getText(),
-                    (Estudiante) comboEstudiantes.getSelectedItem(),
-                    (Tutor) comboTutores.getSelectedItem(),
-                    txtMateria.getText(),
-                    "06-07-2026",
-                    txtHorario.getText(),
-                    "Sala 201"
-            );
-
-            dispose();
+        //Listener para cambio dinámico de lista mostrada en dropdown
+        cbTipoReserva.addActionListener(e -> {
+            if (cbTipoReserva.getSelectedItem().equals("PRESENCIAL")) {
+                lblDetalleExtra.setText("Sala");
+            } else {
+                lblDetalleExtra.setText("Plataforma");
+            }
         });
-        JButton btnCerrar = new JButton("Cerrar");
-        btnCerrar.addActionListener(e -> dispose());
 
-        panelBoton.add(btnGuardar);
-        panelBoton.add(btnCerrar);
-        add(panelBoton, BorderLayout.SOUTH);
+        add(panelFormulario, BorderLayout.CENTER);
+
+        //Panel Botones
+        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnGuardar = new JButton("Crear Reserva");
+        JButton btnCancelar = new JButton("Cancelar");
+
+        panelBotones.add(btnGuardar);
+        panelBotones.add(btnCancelar);
+        add(panelBotones, BorderLayout.SOUTH);
+
+
+
+        //LISTENERS
+        java.awt.event.ActionListener actualizadorTutores = e -> actualizarTutoresCompatibles();
+        cbMateria.addActionListener(actualizadorTutores);
+        cbHorario.addActionListener(actualizadorTutores);
+        actualizarTutoresCompatibles();
+
+        btnCancelar.addActionListener(e -> dispose());
+        btnGuardar.addActionListener(e -> registrarReserva());
+    }
+
+    private void actualizarTutoresCompatibles() {
+        cbTutor.removeAllItems();
+        String materiaSel = (String) cbMateria.getSelectedItem();
+        String horarioSel = (String) cbHorario.getSelectedItem();
+
+        if (materiaSel != null && horarioSel != null) {
+            List<Tutor> compatibles = controlador.buscarTutoresCompatibles(materiaSel, horarioSel);
+
+            if (compatibles.isEmpty()) {
+                cbTutor.addItem("Ningún tutor disponible");
+                btnGuardar.setEnabled(false);
+
+            } else {
+                for (Tutor t : compatibles) {
+                    cbTutor.addItem(t.getNombre());
+                }
+                btnGuardar.setEnabled(true);
+            }
+        }
+    }
+
+    private void registrarReserva() {
+        String nombreEstudiante= (String) cbEstudiante.getSelectedItem();
+        String nombreTutor= (String) cbTutor.getSelectedItem();
+        String materia= (String) cbMateria.getSelectedItem();
+        String horario= (String) cbHorario.getSelectedItem();
+        String tipo= (String) cbTipoReserva.getSelectedItem();
+        String detalleExtra= txtDetalleExtra.getText().trim();
+
+
+        if (nombreEstudiante == null || nombreTutor == null || nombreTutor.equals("Ningún tutor disponible")) {
+            JOptionPane.showMessageDialog(this, "Faltan datos o no hay tutor seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (detalleExtra.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar la sala o plataforma correspondiente.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Estudiante estudiante = controlador.buscarEstudiantePorNombre(nombreEstudiante);
+        Tutor tutor = controlador.buscarTutorPorNombre(nombreTutor);
+
+        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, estudiante, tutor, materia, "fechaStr", horario, detalleExtra);
+
+        controlador.registrarReserva(nuevaReserva);
+        JOptionPane.showMessageDialog(this, "Reserva creada exitosamente.");
+        dispose();
     }
 }

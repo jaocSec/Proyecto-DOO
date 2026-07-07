@@ -21,14 +21,12 @@ public abstract class Reserva {
      * Constructor para inicializar una nueva Reserva.
      * Al crearse, la reserva asume por defecto el estado inicial "Pendiente".
      *
-     * @param idReserva  El identificador único de la reserva.
      * @param estudiante El estudiante que solicita la tutoría.
      * @param tutor      El tutor asignado para impartir la clase.
      * @param materia    El nombre de la materia a estudiar.
      * @param horario    La fecha y hora acordada para la sesión.
      */
-    public Reserva(String idReserva, Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario) {
-        this.idReserva = idReserva;
+    public Reserva(Estudiante estudiante, Tutor tutor, String materia, String fecha, String horario) {
         this.estudiante = estudiante;
         this.tutor = tutor;
         this.materia = materia;

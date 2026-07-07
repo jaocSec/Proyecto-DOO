@@ -3,10 +3,13 @@ package interfaz;
 import logica.Controlador;
 import logica.modelos.Reserva;
 import logica.observer.InterfazObserver;
+import logica.modelos.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+
 
 public class PanelReservas extends JPanel implements InterfazObserver {
     private Controlador controlador;
@@ -14,174 +17,189 @@ public class PanelReservas extends JPanel implements InterfazObserver {
     private JComboBox<String> comboTutores;
     private JButton btnNuevaReserva;
     private JButton btnLimpiarFiltros;
-    private JButton btnCancelarClase;
     private JTable tablaReservas;
     private DefaultTableModel modeloTabla;
 
+    private JButton btnConfirmarReserva;
+    private JButton btnCancelarReserva;
+
     public PanelReservas(Controlador controlador) {
 
-        this.controlador = controlador;
+        this.controlador= controlador;
         controlador.agregarObservador(this);
 
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JPanel panelFiltros = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
+        JPanel panelFiltros= new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 10));
         panelFiltros.setBorder(BorderFactory.createTitledBorder("Filtrar Reservas"));
 
         // Filtro estudiante
         panelFiltros.add(new JLabel("Estudiante:"));
-        comboEstudiantes = new JComboBox<>(new String[]{"Todos", "María Soto", "Pedro Aranda", "Valentina Reyes"}); //Ejemplos
+        comboEstudiantes= new JComboBox<>();
         comboEstudiantes.setPreferredSize(new Dimension(180, 30));
         panelFiltros.add(comboEstudiantes);
 
         //Filtro tutor
         panelFiltros.add(new JLabel("  Tutor:"));
-        comboTutores = new JComboBox<>(new String[]{"Todos", "Juan Pérez", "Ana Gómez", "Carlos Silva"}); //Ejemplos
+        comboTutores= new JComboBox<>();
         comboTutores.setPreferredSize(new Dimension(180, 30));
         panelFiltros.add(comboTutores);
 
         //Agrega Reserva
-        btnNuevaReserva = new JButton("Nueva Reserva");
+        btnNuevaReserva= new JButton("Nueva Reserva");
         panelFiltros.add(btnNuevaReserva);
-        btnNuevaReserva.addActionListener(e -> abrirFormularioReserva());
 
         //Reset filtros
-        btnLimpiarFiltros = new JButton("Limpiar Filtros");
+        btnLimpiarFiltros= new JButton("Limpiar Filtros");
         panelFiltros.add(btnLimpiarFiltros);
         add(panelFiltros, BorderLayout.NORTH);
 
         //Tabla
-        String[] columnas = {"Fecha", "Horario", "Materia", "Estudiante", "Tutor", "Estado"};
-        modeloTabla = new DefaultTableModel(columnas, 0) {
+        String[] columnas= {"Fecha", "Horario", "Materia", "Estudiante", "Tutor", "Estado"};
+        modeloTabla= new DefaultTableModel(columnas, 0) {
             @Override
             public boolean isCellEditable(int row, int column){
                 return false;
             }
         };
 
-        tablaReservas = new JTable(modeloTabla);
+        tablaReservas= new JTable(modeloTabla);
         tablaReservas.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        tablaReservas.setRowHeight(25); // Filas más altas para mejor lectura
+        tablaReservas.setRowHeight(25);
         tablaReservas.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         tablaReservas.getTableHeader().setReorderingAllowed(false);
 
-        tablaReservas.addMouseListener(new java.awt.event.MouseAdapter(){
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e){
-                if (e.getClickCount() == 2){
-                    int filaSeleccionada= tablaReservas.getSelectedRow();
-
-                    if (filaSeleccionada != -1){
-                       int filaModelo= tablaReservas.convertRowIndexToModel(filaSeleccionada);
-
-                       //EJEMPLOS!!
-                        String tutor = (String) modeloTabla.getValueAt(filaModelo, 0);
-                        String estudiante = (String) modeloTabla.getValueAt(filaModelo, 1);
-                        String fecha = (String) modeloTabla.getValueAt(filaModelo, 2);
-                        String estado = (String) modeloTabla.getValueAt(filaModelo, 3);
-
-                        Window ventanaPadre= SwingUtilities.getWindowAncestor(tablaReservas);
-
-                        Reserva reserva =
-                                controlador.getReservas().get(filaModelo);
-
-                        DetalleReservas ventanaDetalle =
-                                new DetalleReservas(ventanaPadre, controlador);
-                        ventanaDetalle.setVisible(true);
-
-                    }
-                }
-            }
-        });
-
-        cargarReservas();
-
-        JScrollPane scrollTabla = new JScrollPane(tablaReservas);
-
-        JPanel panelTablaWrapper = new JPanel(new BorderLayout());
+        JScrollPane scrollTabla= new JScrollPane(tablaReservas);
+        JPanel panelTablaWrapper= new JPanel(new BorderLayout());
         panelTablaWrapper.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
         panelTablaWrapper.add(scrollTabla, BorderLayout.CENTER);
 
         add(panelTablaWrapper, BorderLayout.CENTER);
 
 
+        JPanel panelAcciones= new JPanel(new FlowLayout(FlowLayout.RIGHT, 10 , 0));
 
-        //Botón cancelar clase
-        JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnConfirmarReserva= new JButton("Confirmar Reserva");
+        btnConfirmarReserva.setForeground(new Color(0, 128, 0));
 
-        btnCancelarClase = new JButton("Cancelar Clase Seleccionada");
-        btnCancelarClase.setForeground(Color.RED);
-        btnCancelarClase.addActionListener(e -> cancelarReserva());
+        btnCancelarReserva= new JButton("Cancelar Reserva");
+        btnCancelarReserva.setForeground(Color.RED);
 
-        panelAcciones.add(btnCancelarClase);
-
+        panelAcciones.add(btnConfirmarReserva);
+        panelAcciones.add(btnCancelarReserva);
         add(panelAcciones, BorderLayout.SOUTH);
+
+        btnNuevaReserva.addActionListener(e -> abrirFormularioReserva());
+
+        //Listeners
+        ActionListener filtroListener = e -> cargarReservas();
+        comboEstudiantes.addActionListener(filtroListener);
+        comboTutores.addActionListener(filtroListener);
+
+        btnLimpiarFiltros.addActionListener(e -> {
+            comboEstudiantes.setSelectedIndex(0);
+            comboTutores.setSelectedIndex(0);
+            cargarReservas();
+        });
+
+        //Cambiar Estado
+        btnConfirmarReserva.addActionListener(e -> cambiarEstadoReserva("CONFIRMAR"));
+        btnCancelarReserva.addActionListener(e -> cambiarEstadoReserva("CANCELAR"));
+
+        actualizarFiltros();
+        cargarReservas();
     }
 
-    private void abrirFormularioReserva() {
-        Window ventanaPadre =
-                SwingUtilities.getWindowAncestor(this);
+    private void actualizarFiltros() {
+        Object estSeleccionado = comboEstudiantes.getSelectedItem();
+        Object tutSeleccionado = comboTutores.getSelectedItem();
 
-        DetalleReservas formulario =
-                new DetalleReservas(
-                        ventanaPadre,
-                        controlador
-                );
+        ActionListener[] estListeners = comboEstudiantes.getActionListeners();
+        for (ActionListener l : estListeners) comboEstudiantes.removeActionListener(l);
 
-        formulario.setVisible(true);
-    }
+        ActionListener[] tutListeners = comboTutores.getActionListeners();
+        for (ActionListener l : tutListeners) comboTutores.removeActionListener(l);
 
-    private void cancelarReserva() {
-
-        int fila = tablaReservas.getSelectedRow();
-
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this,
-                    "Seleccione una reserva.");
-            return;
+        comboEstudiantes.removeAllItems();
+        comboEstudiantes.addItem("Todos");
+        for (Estudiante e : controlador.getEstudiantes()) {
+            comboEstudiantes.addItem(e.getNombre());
         }
 
-        Reserva reserva = controlador.getReservas().get(fila);
+        comboTutores.removeAllItems();
+        comboTutores.addItem("Todos");
+        for (Tutor t : controlador.getTutores()) {
+            comboTutores.addItem(t.getNombre());
+        }
 
-        reserva.cancelar();
+        if (estSeleccionado != null) comboEstudiantes.setSelectedItem(estSeleccionado);
+        if (tutSeleccionado != null) comboTutores.setSelectedItem(tutSeleccionado);
 
-        controlador.refrescarUI();
-
+        for (ActionListener l : estListeners) comboEstudiantes.addActionListener(l);
+        for (ActionListener l : tutListeners) comboTutores.addActionListener(l);
     }
 
     private void cargarReservas() {
-
         modeloTabla.setRowCount(0);
 
+        String filtroEstudiante = (String) comboEstudiantes.getSelectedItem();
+        String filtroTutor = (String) comboTutores.getSelectedItem();
+
         for (Reserva reserva : controlador.getReservas()) {
+            String nombreEstudiante = reserva.getEstudiante() != null ? reserva.getEstudiante().getNombre() : "Sin asignar";
+            String nombreTutor = reserva.getTutor() != null ? reserva.getTutor().getNombre() : "Sin asignar";
 
-            modeloTabla.addRow(new Object[]{
+            boolean coincideEst = filtroEstudiante == null || filtroEstudiante.equals("Todos") || nombreEstudiante.equals(filtroEstudiante);
+            boolean coincideTut = filtroTutor == null || filtroTutor.equals("Todos") || nombreTutor.equals(filtroTutor);
 
-                    reserva.getFecha(),
+            if (coincideEst && coincideTut) {
+                modeloTabla.addRow(new Object[]{
+                        reserva.getFecha(),
+                        reserva.getHorario(),
+                        reserva.getMateria(),
+                        nombreEstudiante,
+                        nombreTutor,
+                        reserva.getEstadoActual().getClass().getSimpleName().replace("Estado", "")
+                });
+            }
+        }
+    }
 
-                    reserva.getHorario(),
-
-                    reserva.getMateria(),
-
-                    reserva.getEstudiante() != null
-                            ? reserva.getEstudiante().getNombre()
-                            : "",
-
-                    reserva.getTutor() != null
-                            ? reserva.getTutor().getNombre()
-                            : "",
-
-                    reserva.getEstadoActual().getClass().getSimpleName()
-                            .replace("Estado","")
-
-            });
-
+    private void cambiarEstadoReserva(String accion) {
+        int filaVista = tablaReservas.getSelectedRow();
+        if (filaVista == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una reserva de la tabla primero.");
+            return;
         }
 
+        int filaModelo = tablaReservas.convertRowIndexToModel(filaVista);
+        Reserva reserva = controlador.getReservas().get(filaModelo);
+
+        switch (accion) {
+            case "CONFIRMAR":
+                reserva.confirmar();
+                break;
+            case "FINALIZAR":
+                reserva.finalizar();
+                break;
+            case "CANCELAR":
+                reserva.cancelar();
+                break;
+        }
+
+        controlador.refrescarUI();
     }
+
+    private void abrirFormularioReserva() {
+        Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
+        DetalleReservas formulario = new DetalleReservas(ventanaPadre, controlador);
+        formulario.setVisible(true);
+    }
+
     @Override
     public void actualizar() {
+        actualizarFiltros();
         cargarReservas();
     }
 }
