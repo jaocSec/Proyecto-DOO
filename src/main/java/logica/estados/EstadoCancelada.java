@@ -16,18 +16,14 @@ public class EstadoCancelada implements EstadoReserva {
      * @param reserva La reserva sobre la cual se aplica la acción.
      */
     @Override
-    public void confirmar(Reserva reserva) {
-        System.out.println("Error: No se puede confirmar una reserva que ya fue cancelada.");
-    }
+    public void confirmar(Reserva reserva) {}
     /**
      * Intenta cancelar una reserva que ya se encuentra en estado cancelado.
      *
      * @param reserva La reserva sobre la cual se aplica la acción.
      */
     @Override
-    public void cancelar(Reserva reserva) {
-        System.out.println("La reserva ya se encuentra cancelada.");
-    }
+    public void cancelar(Reserva reserva){}
     /**
      * Intenta finalizar la reserva. Produce un error ya que la tutoría
      * nunca se llevó a cabo.
@@ -35,7 +31,5 @@ public class EstadoCancelada implements EstadoReserva {
      * @param reserva La reserva sobre la cual se aplica la acción.
      */
     @Override
-    public void finalizar(Reserva reserva) {
-        System.out.println("Error: No se puede finalizar una tutoría de una reserva cancelada.");
-    }
+    public void finalizar(Reserva reserva) {}
 }

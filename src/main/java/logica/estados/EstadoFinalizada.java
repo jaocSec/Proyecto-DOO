@@ -17,7 +17,6 @@ public class EstadoFinalizada implements EstadoReserva {
      */
     @Override
     public void confirmar(Reserva reserva) {
-        System.out.println("Error: La tutoría ya finalizó, no se puede volver a confirmar.");
     }
     /**
      * Intenta cancelar la reserva. Produce un error porque una tutoría
@@ -27,7 +26,6 @@ public class EstadoFinalizada implements EstadoReserva {
      */
     @Override
     public void cancelar(Reserva reserva) {
-        System.out.println("Error: No se puede cancelar una tutoría que ya se impartió y finalizó.");
     }
     /**
      * Intenta finalizar una reserva que ya está registrada como finalizada.
@@ -36,6 +34,5 @@ public class EstadoFinalizada implements EstadoReserva {
      */
     @Override
     public void finalizar(Reserva reserva) {
-        System.out.println("La reserva ya se encuentra registrada como finalizada.");
     }
 }

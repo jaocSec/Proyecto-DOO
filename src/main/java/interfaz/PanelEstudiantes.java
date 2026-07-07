@@ -72,16 +72,8 @@ public class PanelEstudiantes extends JPanel implements InterfazObserver {
         JPanel panelDerecho = new JPanel(new BorderLayout());
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Nombre y foto
+        // Nombre
         JPanel panelHeader = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 20));
-
-
-        ImageIcon iconoOriginal = new ImageIcon("src/imagenes/perfil.png"); //no funciona, arreglar
-        Image imagenRedimensionada = iconoOriginal.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-        ImageIcon iconoFinal = new ImageIcon(imagenRedimensionada);
-
-        lblAvatar = new JLabel(iconoFinal);
-        lblAvatar.setFont(new Font("Segoe UI", Font.PLAIN, 60));
 
         lblNombre = new JLabel("Seleccione un estudiante");
         lblNombre.setFont(new Font("Segoe UI", Font.BOLD, 22));

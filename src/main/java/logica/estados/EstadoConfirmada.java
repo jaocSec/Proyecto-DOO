@@ -16,9 +16,7 @@ public class EstadoConfirmada implements EstadoReserva {
      * @param reserva La reserva sobre la cual se aplica la acción.
      */
     @Override
-    public void confirmar(Reserva reserva) {
-        System.out.println("La reserva ya se encuentra confirmada.");
-    }
+    public void confirmar(Reserva reserva){};
     /**
      * Cancela la reserva previamente confirmada y transita a EstadoCancelada.
      *
@@ -26,7 +24,6 @@ public class EstadoConfirmada implements EstadoReserva {
      */
     @Override
     public void cancelar(Reserva reserva) {
-        System.out.println("El estudiante o tutor ha cancelado la reserva confirmada.");
         reserva.setEstadoActual(new EstadoCancelada());
     }
     /**
@@ -37,7 +34,6 @@ public class EstadoConfirmada implements EstadoReserva {
      */
     @Override
     public void finalizar(Reserva reserva) {
-        System.out.println("La tutoría se ha realizado con éxito. Finalizando reserva...");
         reserva.setEstadoActual(new EstadoFinalizada());
     }
 }

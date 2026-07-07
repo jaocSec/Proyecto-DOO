@@ -105,8 +105,34 @@ public class Controlador extends Observable{
         return compatibles;
     }
 
+    private void EstadoAutomatico(){
+        java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+        for (Reserva reserva : reservas) {
+            if (reserva.getEstadoActual().getClass().getSimpleName().equals("EstadoConfirmada")) {
+                try {
+                    String horaExtraida = reserva.getHorario().contains("-")
+                            ? reserva.getHorario().split("-")[1]
+                            : reserva.getHorario();
+
+                    String fechaHoraStr = reserva.getFecha() + " " + horaExtraida;
+                    java.time.LocalDateTime fechaHoraReserva = java.time.LocalDateTime.parse(fechaHoraStr, formatter);
+
+                    if (fechaHoraReserva.isBefore(ahora)) {
+                        reserva.finalizar();
+                    }
+                } catch (Exception e) {
+                    //nada
+                }
+            }
+        }
+
+    }
+
     //GETTERS
-    public List<Reserva> getReservas() {
+    public java.util.List<Reserva> getReservas() {
+        EstadoAutomatico();
         return reservas;
     }
 

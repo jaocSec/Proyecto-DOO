@@ -18,6 +18,8 @@ public class DetalleReservas extends JDialog {
     private JComboBox<String> cbTutor;
     private JComboBox<String> cbTipoReserva;
     private JTextField txtDetalleExtra;
+
+    private JSpinner spinnerFecha;
     private JButton btnGuardar;
 
     public DetalleReservas(Window parent, Controlador controlador) {
@@ -60,19 +62,19 @@ public class DetalleReservas extends JDialog {
         panelFormulario.add(cbTipoReserva);
 
         //Plataforma o sala
-        JLabel lblDetalleExtra = new JLabel("Plataforma");
+        JLabel lblDetalleExtra = new JLabel("Plataforma:");
         txtDetalleExtra = new JTextField();
         panelFormulario.add(lblDetalleExtra);
         panelFormulario.add(txtDetalleExtra);
 
-        //Listener para cambio dinámico de lista mostrada en dropdown
-        cbTipoReserva.addActionListener(e -> {
-            if (cbTipoReserva.getSelectedItem().equals("PRESENCIAL")) {
-                lblDetalleExtra.setText("Sala");
-            } else {
-                lblDetalleExtra.setText("Plataforma");
-            }
-        });
+        //Fecha
+        panelFormulario.add(new JLabel("Fecha (dd-MM-yyyy):"));
+        SpinnerDateModel modeloFecha = new SpinnerDateModel();
+        spinnerFecha = new JSpinner(modeloFecha);
+
+        JSpinner.DateEditor editorFecha = new JSpinner.DateEditor(spinnerFecha, "dd-MM-yyyy");
+        spinnerFecha.setEditor(editorFecha);
+        panelFormulario.add(spinnerFecha);
 
         add(panelFormulario, BorderLayout.CENTER);
 
@@ -95,6 +97,15 @@ public class DetalleReservas extends JDialog {
 
         btnCancelar.addActionListener(e -> dispose());
         btnGuardar.addActionListener(e -> registrarReserva());
+
+        //listener para cambiar entre sala o plataforma
+        cbTipoReserva.addActionListener(e -> {
+            if (cbTipoReserva.getSelectedItem().equals("PRESENCIAL")) {
+                lblDetalleExtra.setText("Sala");
+            } else {
+                lblDetalleExtra.setText("Plataforma");
+            }
+        });
     }
 
     private void actualizarTutoresCompatibles() {
@@ -126,6 +137,10 @@ public class DetalleReservas extends JDialog {
         String tipo= (String) cbTipoReserva.getSelectedItem();
         String detalleExtra= txtDetalleExtra.getText().trim();
 
+        java.util.Date fechaSeleccionada = (java.util.Date) spinnerFecha.getValue();
+        java.text.SimpleDateFormat formateador = new java.text.SimpleDateFormat("dd-MM-yyyy");
+        String fechaStr = formateador.format(fechaSeleccionada);
+
 
         if (nombreEstudiante == null || nombreTutor == null || nombreTutor.equals("Ningún tutor disponible")) {
             JOptionPane.showMessageDialog(this, "Faltan datos o no hay tutor seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -140,7 +155,7 @@ public class DetalleReservas extends JDialog {
         Estudiante estudiante = controlador.buscarEstudiantePorNombre(nombreEstudiante);
         Tutor tutor = controlador.buscarTutorPorNombre(nombreTutor);
 
-        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, estudiante, tutor, materia, "fechaStr", horario, detalleExtra);
+        Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, estudiante, tutor, materia, fechaStr, horario, detalleExtra);
 
         controlador.registrarReserva(nuevaReserva);
         JOptionPane.showMessageDialog(this, "Reserva creada exitosamente.");

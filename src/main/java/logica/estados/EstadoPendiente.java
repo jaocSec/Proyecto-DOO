@@ -16,7 +16,6 @@ public class EstadoPendiente implements EstadoReserva {
      */
     @Override
     public void confirmar(Reserva reserva) {
-        System.out.println("La reserva ha sido confirmada por el tutor.");
         reserva.setEstadoActual(new EstadoConfirmada());    }
     /**
      * Cancela la reserva pendiente y transita hacia el estado EstadoCancelada.
@@ -25,7 +24,6 @@ public class EstadoPendiente implements EstadoReserva {
      */
     @Override
     public void cancelar(Reserva reserva) {
-        System.out.println("La reserva pendiente ha sido cancelada.");
         reserva.setEstadoActual(new EstadoCancelada());
     }
     /**
@@ -36,6 +34,5 @@ public class EstadoPendiente implements EstadoReserva {
      */
     @Override
     public void finalizar(Reserva reserva) {
-        System.out.println("Error: No puedes finalizar una reserva que aún está pendiente.");
     }
 }
