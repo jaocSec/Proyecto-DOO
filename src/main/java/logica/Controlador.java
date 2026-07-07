@@ -128,6 +128,30 @@ public class Controlador extends Observable{
     }
 
     /**
+     * Verifica si un tutor tiene cupo disponible para aceptar una nueva reserva.
+     * Cuenta las reservas activas (no canceladas ni finalizadas) asignadas al tutor y las compara con su límite máximo establecido.
+     * @param tutor El tutor a evaluar.
+     * @return true si tiene disponibilidad, false si alcanzó su cupo máximo.
+     */
+    public boolean tieneCupo(Tutor tutor) {
+        if (tutor == null) return false;
+
+        int reservasActivas = 0;
+
+        for (Reserva r : reservas) {
+            if (r.getTutor() != null && r.getTutor().getRUT().equals(tutor.getRUT())) {
+                String nombreEstado = r.getEstadoActual().getClass().getSimpleName();
+
+                if (!nombreEstado.equals("EstadoCancelada") && !nombreEstado.equals("EstadoFinalizada")) {
+                    reservasActivas++;
+                }
+            }
+        }
+
+        return reservasActivas < tutor.getCupoMaximo();
+    }
+
+    /**
      * Filtra tutores según disponibilidad y materia.
      * @param materia Materia requerida.
      * @param horario Horario solicitado.

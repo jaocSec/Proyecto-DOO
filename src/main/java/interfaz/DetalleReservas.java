@@ -155,6 +155,14 @@ public class DetalleReservas extends JDialog {
         Estudiante estudiante = controlador.buscarEstudiantePorNombre(nombreEstudiante);
         Tutor tutor = controlador.buscarTutorPorNombre(nombreTutor);
 
+        if (!controlador.tieneCupo(tutor)) {
+            JOptionPane.showMessageDialog(this,
+                    "El tutor " + tutor.getNombre() + " ya alcanzó su límite máximo de alumnos (" + tutor.getCupoMaximo() + ").",
+                    "Cupo Excedido",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, estudiante, tutor, materia, fechaStr, horario, detalleExtra);
 
         controlador.registrarReserva(nuevaReserva);
