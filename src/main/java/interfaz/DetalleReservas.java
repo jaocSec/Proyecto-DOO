@@ -188,7 +188,13 @@ public class DetalleReservas extends JDialog {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
-
+        if (controlador.existeConflictoHorario(tutor.getRUT(), horario)) {
+            JOptionPane.showMessageDialog(this,
+                    "El tutor " + tutor.getNombre() + " ya cuenta con una reserva activa en el horario " + horario + ".",
+                    "Conflicto de Horario",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         Reserva nuevaReserva = ReservaFactory.crearReserva(tipo, estudiante, tutor, materia, fechaStr, horario, detalleExtra);
 
         if (nuevaReserva instanceof ReservaVirtual) {

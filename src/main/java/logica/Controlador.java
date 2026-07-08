@@ -153,7 +153,30 @@ public class Controlador extends Observable{
 
         return reservasActivasMateria < limiteMateria;
     }
+    /**
+     * Verifica si un tutor ya tiene una reserva activa (Pendiente o Confirmada) en un horario específico.
+     * * @param rutTutor El RUT del tutor que se quiere agendar.
+     * @param horario El horario solicitado por el estudiante.
+     * @return true si hay conflicto (horario ocupado), false si está libre.
+     */
+    public boolean existeConflictoHorario(String rutTutor, String horario) {
+        for (Reserva r : reservas) {
+            // Verificamos que coincida el tutor y el horario
+            if (r.getTutor() != null && r.getTutor().getRUT().equals(rutTutor)) {
+                if (r.getHorario().equals(horario)) {
 
+                    // Extraemos el nombre del estado usando tu mismo estilo
+                    String estado = r.getEstadoActual().getClass().getSimpleName();
+
+                    // Si la reserva en ese horario está activa, hay conflicto
+                    if (estado.equals("EstadoConfirmada") || estado.equals("EstadoPendiente")) {
+                        return true; // ¡Choque detectado!
+                    }
+                }
+            }
+        }
+        return false; // El horario está completamente libre
+    }
     /**
      * Filtra tutores según disponibilidad y materia.
      * @param materia Materia requerida.
