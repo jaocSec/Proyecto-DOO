@@ -78,16 +78,37 @@ public class FormularioTutor extends JDialog {
         JButton btnCancelar = new JButton("Cancelar");
 
         btnGuardar.addActionListener(e -> {
+            // Verificamos que ningún campo obligatorio esté vacío
             if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtTarifa.getText().isBlank() || txtRut.getText().isBlank()) {
                 JOptionPane.showMessageDialog(this, "Complete todos los campos de texto.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            try {
-                Double.parseDouble(txtTarifa.getText().trim());
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "La tarifa debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            // Validamos el formato del RUT (Módulo 11)
+            if (!Validador.esRutValido(txtRut.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "El RUT ingresado no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            // Validamos el formato del Correo
+            if (!Validador.esCorreoValido(txtCorreo.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "El correo electrónico no tiene un formato válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validamos que la Tarifa sea un número
+            if (!Validador.esNumeroValido(txtTarifa.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "La tarifa debe ser un número válido y positivo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validamos el Cupo (solo si el campo no está deshabilitado por edición)
+            if (txtCupo.isEnabled() && !Validador.esNumeroValido(txtCupo.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "El cupo debe ser un número válido y positivo.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Si pasa todos los filtros, confirmamos el guardado
             guardado = true;
             dispose();
         });
