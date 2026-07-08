@@ -56,5 +56,13 @@ public class Validador {
         }
         return validacion;
     }
+    /**
+     * Valida que el teléfono contenga solo números y tenga una longitud válida.
+     */
+    public static boolean esTelefonoValido(String telefono) {
+        // Expresión regular: Solo números, entre 8 y 11 caracteres de largo
+        String regex = "^[0-9]{8,11}$";
+        return Pattern.matches(regex, telefono);
+    }
 }
 

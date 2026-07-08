@@ -2,6 +2,7 @@ package interfaz;
 
 import javax.swing.*;
 import java.awt.*;
+import logica.Validador;
 
 /**
  * Cuadro de diálogo que contiene un formulario para gestionar estudiantes.
@@ -52,10 +53,31 @@ public class FormularioEstudiante extends JDialog {
         JButton btnCancelar = new JButton("Cancelar");
 
         btnGuardar.addActionListener(e -> {
-            if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtTelefono.getText().isBlank() || txtRut.getText().isBlank()) {
-                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+            // 1. Verificamos que los campos no estén vacíos (asumiendo que las variables se llaman así)
+            if (txtNombre.getText().isBlank() || txtCorreo.getText().isBlank() || txtRut.getText().isBlank() || txtTelefono.getText().isBlank()) {
+                JOptionPane.showMessageDialog(this, "Complete todos los campos de texto.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            // 2. Validamos el RUT
+            if (!Validador.esRutValido(txtRut.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "El RUT ingresado no es válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 3. Validamos el Correo
+            if (!Validador.esCorreoValido(txtCorreo.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "El correo electrónico no tiene un formato válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 4. Validamos el Teléfono
+            if (!Validador.esTelefonoValido(txtTelefono.getText().trim())) {
+                JOptionPane.showMessageDialog(this, "El teléfono debe contener solo números y tener una longitud válida.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Si pasa todas las pruebas, confirmamos el guardado
             guardado = true;
             dispose();
         });
